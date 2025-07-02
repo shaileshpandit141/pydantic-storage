@@ -47,6 +47,7 @@ dev = [
 [package.dev-dependencies]
 dev = [
     { name = "json-file-storage" },
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -59,7 +60,10 @@ requires-dist = [
 provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "json-file-storage", editable = "." }]
+dev = [
+    { name = "json-file-storage", editable = "." },
+    { name = "pytest", specifier = ">=8.4.1" },
+]
 
 [[package]]
 name = "mypy"

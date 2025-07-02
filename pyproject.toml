@@ -44,7 +44,10 @@ build-backend = "hatchling.build" # Build backend
 # Dependency groups
 # =================
 [dependency-groups]
-dev = ["json-file-storage"] # Development dependency group
+dev = [
+    "json-file-storage",
+    "pytest>=8.4.1",
+] # Development dependency group
 
 # ===============
 # UV tool sources
