@@ -1,7 +1,9 @@
 [project]
 name = "json-file-storage"
 version = "0.1.0"
-description = "Add your description here"
+description = """
+A simple JSON-based storage backend for Pydantic models with metadata and record management.
+"""
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
