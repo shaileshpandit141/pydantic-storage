@@ -19,8 +19,16 @@ dependencies = [
     { name = "pydantic" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "json-file-storage" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "pydantic", specifier = ">=2.11.7" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "json-file-storage", editable = "." }]
 
 [[package]]
 name = "pydantic"

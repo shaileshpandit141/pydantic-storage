@@ -19,6 +19,14 @@ json-file-storage = "json_file_storage:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[dependency-groups]
+dev = [
+    "json-file-storage",
+]
+
+[tool.uv.sources]
+json-file-storage = { workspace = true }
+
 [project.urls]
 Homepage = "https://github.com/shaileshpandit141/json-file-storage"
 Repository = "https://github.com/shaileshpandit141/json-file-storage"
