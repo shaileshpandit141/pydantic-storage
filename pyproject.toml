@@ -5,27 +5,29 @@ description = "Add your description here"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" }
+    { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" },
 ]
 requires-python = ">=3.13"
-dependencies = [
-    "pydantic>=2.11.7",
-]
+dependencies = ["pydantic>=2.11.7"]
 
 [project.scripts]
-json-file-storage = "json_file_storage:main"
+json-file-storage = "json_file_storage"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "json-file-storage",
-]
+dev = ["json-file-storage"]
 
 [tool.uv.sources]
 json-file-storage = { workspace = true }
+
+[project.optional-dependencies]
+dev = ["pytest", "mypy", "ruff"]
+
+[tool.setuptools.package-data]
+"json_file_storage" = ["py.typed"]
 
 [project.urls]
 Homepage = "https://github.com/shaileshpandit141/json-file-storage"
