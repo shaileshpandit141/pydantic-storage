@@ -1,3 +1,7 @@
+# ==========================
+# Main project configuration 
+# ==========================
+
 [project]
 name = "json-file-storage"
 version = "0.1.0"
@@ -24,25 +28,46 @@ classifiers = [
 requires-python = ">=3.13"
 dependencies = ["pydantic>=2.11.7"]
 
+# CLI scripts entry point configuration
+# -------------------------------------
 [project.scripts]
-json-file-storage = "json_file_storage:entry_point"
+json-file-storage = "json_file_storage:entry_point" # CLI entry point
 
+# ==========================
+# Build system configuration
+# ==========================
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["hatchling"]          # Build tool requirement
+build-backend = "hatchling.build" # Build backend
 
+# =================
+# Dependency groups
+# =================
 [dependency-groups]
-dev = ["json-file-storage"]
+dev = ["json-file-storage"] # Development dependency group
 
+# ===============
+# UV tool sources
+# ===============
 [tool.uv.sources]
 json-file-storage = { workspace = true }
 
+# =====================
+# Optional dependencies
+# =====================
 [project.optional-dependencies]
-dev = ["pytest", "mypy", "ruff"]
+dev = ["pytest", "mypy", "ruff"] # Optional dev dependencies
 
+# ============
+# Package data
+# ============
 [tool.setuptools.package-data]
-"json_file_storage" = ["py.typed"]
+"json_file_storage" = ["py.typed"] # Include type information
 
+# ============
+# Project URLs
+# ============
 [project.urls]
 Homepage = "https://github.com/shaileshpandit141/json-file-storage"
 Repository = "https://github.com/shaileshpandit141/json-file-storage"
+Issues = "https://github.com/shaileshpandit141/json-file-storage/issues"
