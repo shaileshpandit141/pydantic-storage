@@ -3,6 +3,7 @@ name = "json-file-storage"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
     { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" }
 ]
