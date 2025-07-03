@@ -15,12 +15,15 @@ class StorageDict(TypedDict):
     encryption: str
 
 
-class MetaDataDict(TypedDict):
+class MetaDataConfigDict(TypedDict):
     version: str
     title: str
     description: str
-    timestamps: TimestampDict
+
+
+class MetaDataDict(MetaDataConfigDict):
     storage: StorageDict
+    timestamps: TimestampDict
 
 
 class JsonFileDict(TypedDict):

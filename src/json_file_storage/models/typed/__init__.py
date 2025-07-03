@@ -1,3 +1,3 @@
-from ._types import JsonFileDict, MetaDataDict, T
+from ._types import JsonFileDict, MetaDataConfigDict, MetaDataDict, T
 
-__all__: list[str] = ["JsonFileDict", "MetaDataDict", "T"]
+__all__: list[str] = ["JsonFileDict", "MetaDataConfigDict", "MetaDataDict", "T"]
