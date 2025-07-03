@@ -1,4 +1,4 @@
-from typing import Any, TypedDict, TypeVar
+from typing import Generic, TypedDict, TypeVar
 
 from pydantic import BaseModel
 
@@ -26,6 +26,6 @@ class MetaDataDict(MetaDataConfigDict):
     timestamps: TimestampDict
 
 
-class JsonFileDict(TypedDict):
+class JsonFileDict(TypedDict, Generic[T]):
     metadata: MetaDataDict
-    records: dict[str, Any]
+    records: dict[str, T]
