@@ -21,4 +21,8 @@ class MetaDataDict(TypedDict):
     description: str
     timestamps: TimestampDict
     storage: StorageDict
+
+
+class JsonFileDict(TypedDict):
+    metadata: MetaDataDict
     records: dict[str, Any]
