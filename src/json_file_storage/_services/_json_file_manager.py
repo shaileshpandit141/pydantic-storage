@@ -85,4 +85,3 @@ class JsonFileManager(AbstractFileManager[T]):
         """
         if self.exists() and self.file.is_file():
             self.file.unlink()
-
