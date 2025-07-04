@@ -1,3 +1,3 @@
-from .abstract_file_manager import AbstractJsonFileManager
+from .abstract_file_manager import AbstractFileManager
 
-__all__: list[str] = ["AbstractJsonFileManager"]
+__all__: list[str] = ["AbstractFileManager"]
