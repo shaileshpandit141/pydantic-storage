@@ -1,7 +1,9 @@
+import json
 from pathlib import Path
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.models.typed import T
+from json_file_storage.exceptions import JSONDecodeError
+from json_file_storage.models.typed import JsonFileDict, T
 
 
 class JsonFileManager(AbstractFileManager[T]):
@@ -20,3 +22,16 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         return self.file.exists()
+
+    def read(self) -> JsonFileDict[T]:
+        """
+        Read data from a JSON file and return it.
+
+        Returns:
+            JsonFileDict[T]: The data read from the JSON file.
+
+        """
+        try:
+            return json.loads(self.file.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            raise JSONDecodeError(error) from error
