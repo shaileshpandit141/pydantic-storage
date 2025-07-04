@@ -13,6 +13,11 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
+    def create(self) -> None:
+        """Create a new JSON file if it does not exist."""
+        raise NotImplementedError
+
+    @abstractmethod
     def read(self) -> JsonFileDict[T]:
         """Read data from a JSON file and return it."""
         raise NotImplementedError
