@@ -23,6 +23,23 @@ class JsonFileManager(AbstractFileManager[T]):
         """
         return self.file.exists()
 
+    def create(self) -> None:
+        """
+        Create a new JSON file if it does not exist.
+
+        Returns:
+            None
+
+        """
+        # Check if the file already exists or not
+        if not self.exists():
+            # Create parent directories if they don't exist
+            if self.file.parent != Path():
+                self.file.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create the file (or update timestamp if it exists)
+            self.file.touch(exist_ok=True)
+
     def read(self) -> JsonFileDict[T]:
         """
         Read data from a JSON file and return it.
