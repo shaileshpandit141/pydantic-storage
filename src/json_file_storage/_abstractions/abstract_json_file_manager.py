@@ -4,8 +4,8 @@ from typing import Generic
 from json_file_storage.models.typed import JsonFileDict, T
 
 
-class AbstractJsonFileManager(ABC, Generic[T]):
-    """Abstract base class for managing JSON file operations."""
+class AbstractFileManager(ABC, Generic[T]):
+    """Abstract base class for managing file operations."""
 
     @abstractmethod
     def read(self) -> JsonFileDict[T]:

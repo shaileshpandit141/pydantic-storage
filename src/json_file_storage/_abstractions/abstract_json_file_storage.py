@@ -4,8 +4,8 @@ from typing import Any, Callable, Generic
 from json_file_storage.models.typed import T
 
 
-class AbstractJsonFileStorage(ABC, Generic[T]):
-    """Abstract base class for JSON file storage."""
+class AbstractFileStorage(ABC, Generic[T]):
+    """Abstract base class for file storage."""
 
     @abstractmethod
     def all(self) -> list[T]:
