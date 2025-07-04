@@ -18,7 +18,7 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def write(self, data: T) -> None:
+    def write(self, data: JsonFileDict[T]) -> None:
         """Write data to a JSON file."""
         raise NotImplementedError
 
