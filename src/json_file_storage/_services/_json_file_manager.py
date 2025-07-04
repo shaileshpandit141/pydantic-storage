@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.exceptions import JSONDecodeError
+from json_file_storage.exceptions import JSONDecodeError, JSONEncodeError
 from json_file_storage.models.typed import JsonFileDict, T
 
 
@@ -35,3 +35,22 @@ class JsonFileManager(AbstractFileManager[T]):
             return json.loads(self.file.read_text(encoding="utf-8"))
         except json.JSONDecodeError as error:
             raise JSONDecodeError(error) from error
+
+    def write(self, data: JsonFileDict[T]) -> None:
+        """
+        Write data to a JSON file.
+
+        Args:
+            data (T): The data to write to the JSON file.
+
+        Raises:
+            JSONDecodeError: If the data cannot be serialized to JSON.
+
+        Returns:
+            None
+
+        """
+        try:
+            self.file.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        except TypeError as error:
+            raise JSONEncodeError(error) from error
