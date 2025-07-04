@@ -71,3 +71,18 @@ class JsonFileManager(AbstractFileManager[T]):
             self.file.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         except TypeError as error:
             raise JSONEncodeError(error) from error
+
+    def delete(self) -> None:
+        """
+        Delete Created JSON file.
+
+        Raises:
+            PermissionError: Rise if you don't have permission to delete the file.
+
+        Returns:
+            None
+
+        """
+        if self.exists() and self.file.is_file():
+            self.file.unlink()
+
