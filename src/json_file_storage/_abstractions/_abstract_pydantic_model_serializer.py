@@ -7,12 +7,13 @@ from json_file_storage.models.typed import RecordDict, T
 class AbstractPydanticModelSerializer(ABC, Generic[T]):
     """Abstract base class for data serializers that manage data serialization and deserialization."""
 
-    def __init__(self, data: RecordDict[T]) -> None:
+    def __init__(self, pydantic_model: type[T], data: RecordDict[T]) -> None:
         """Initialize the abstract data serializer."""
+        self.pydantic_model: type[T] = pydantic_model
         self.data: RecordDict[T] = data
 
     @abstractmethod
-    def moedl_to_dict(self) -> RecordDict[Any]:
+    def model_to_dict(self) -> RecordDict[Any]:
         """
         Convert the data structure to a dictionary.
 
