@@ -2,15 +2,20 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
+from pydantic import BaseModel
+
 from json_file_storage.models.typed import FileDict, T
 
 
 class AbstractFileManager(ABC, Generic[T]):
     """Abstract base class for managing file operations."""
 
-    def __init__(self, file_path: str, initial_data: FileDict[T]) -> None:
+    def __init__(
+        self, file_path: str, pydantic_model: BaseModel, initial_data: FileDict[T]
+    ) -> None:
         """Initialize the JsonFileManager."""
         self.file: Path = Path(file_path)
+        self.pydantic_model: BaseModel[T] = pydantic_model
         self.initial_data: FileDict[T] = initial_data
 
     @abstractmethod
