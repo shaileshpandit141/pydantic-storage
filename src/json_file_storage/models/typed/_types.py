@@ -26,10 +26,10 @@ class MetaDataDict(MetaDataConfigDict):
     timestamps: TimestampDict
 
 
-class JsonFileRecordDict(TypedDict, Generic[T]):
+class RecordDict(TypedDict, Generic[T]):
     records: dict[str, T]
 
 
-class JsonFileDict(JsonFileRecordDict[T]):
+class FileDict(RecordDict[T]):
     metadata: MetaDataDict
     records: dict[str, T]

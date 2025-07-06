@@ -1,15 +1,15 @@
 from ._types import (
-    JsonFileDict,
-    JsonFileRecordDict,
+    FileDict,
     MetaDataConfigDict,
     MetaDataDict,
+    RecordDict,
     T,
 )
 
 __all__: list[str] = [
-    "JsonFileDict",
-    "JsonFileRecordDict",
+    "FileDict",
     "MetaDataConfigDict",
     "MetaDataDict",
+    "RecordDict",
     "T",
 ]

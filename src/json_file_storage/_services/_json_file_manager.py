@@ -3,7 +3,7 @@ from pathlib import Path
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
 from json_file_storage.exceptions import JSONDecodeError, JSONEncodeError
-from json_file_storage.models.typed import JsonFileDict, T
+from json_file_storage.models.typed import FileDict, T
 
 
 class JsonFileManager(AbstractFileManager[T]):
@@ -40,12 +40,12 @@ class JsonFileManager(AbstractFileManager[T]):
             # Create the file (or update timestamp if it exists)
             self.file.touch(exist_ok=True)
 
-    def read(self) -> JsonFileDict[T]:
+    def read(self) -> FileDict[T]:
         """
         Read data from a JSON file and return it.
 
         Returns:
-            JsonFileDict[T]: The data read from the JSON file.
+            FileDict[T]: The data read from the JSON file.
 
         """
         try:
@@ -53,7 +53,7 @@ class JsonFileManager(AbstractFileManager[T]):
         except json.JSONDecodeError as error:
             raise JSONDecodeError(error) from error
 
-    def write(self, data: JsonFileDict[T]) -> None:
+    def write(self, data: FileDict[T]) -> None:
         """
         Write data to a JSON file.
 

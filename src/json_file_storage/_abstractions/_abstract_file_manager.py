@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic
 
-from json_file_storage.models.typed import JsonFileDict, T
+from json_file_storage.models.typed import FileDict, T
 
 
 class AbstractFileManager(ABC, Generic[T]):
@@ -18,12 +18,12 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def read(self) -> JsonFileDict[T]:
+    def read(self) -> FileDict[T]:
         """Read data from a JSON file and return it."""
         raise NotImplementedError
 
     @abstractmethod
-    def write(self, data: JsonFileDict[T]) -> None:
+    def write(self, data: FileDict[T]) -> None:
         """Write data to a JSON file."""
         raise NotImplementedError
 
