@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Generic
 
 from json_file_storage.models.typed import FileDict, T
@@ -6,6 +7,11 @@ from json_file_storage.models.typed import FileDict, T
 
 class AbstractFileManager(ABC, Generic[T]):
     """Abstract base class for managing file operations."""
+
+    def __init__(self, file_path: str, initial_data: FileDict[T]) -> None:
+        """Initialize the JsonFileManager."""
+        self.file: Path = Path(file_path)
+        self.initial_data: FileDict[T] = initial_data
 
     @abstractmethod
     def exists(self) -> bool:
