@@ -32,4 +32,3 @@ class RecordDict(TypedDict, Generic[T]):
 
 class FileDict(RecordDict[T]):
     metadata: MetaDataDict
-    records: dict[str, T]
