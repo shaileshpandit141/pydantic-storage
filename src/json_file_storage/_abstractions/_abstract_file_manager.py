@@ -9,12 +9,12 @@ class AbstractFileManager(ABC, Generic[T]):
     """Abstract base class for managing file operations."""
 
     def __init__(
-        self, file_path: str, pydantic_model: type[T], initial_data: FileDict[T]
+        self, file_path: str, pydantic_model: type[T], data: FileDict[T]
     ) -> None:
         """Initialize the JsonFileManager."""
         self.file: Path = Path(file_path)
         self.pydantic_model: type[T] = pydantic_model
-        self.initial_data: FileDict[T] = initial_data
+        self.data: FileDict[T] = data
 
     @abstractmethod
     def exists(self) -> bool:
