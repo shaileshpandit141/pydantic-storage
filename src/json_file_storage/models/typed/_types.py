@@ -1,4 +1,4 @@
-from typing import TypeAlias, TypedDict, TypeVar
+from typing import Generic, TypeAlias, TypedDict, TypeVar
 
 from pydantic import BaseModel
 
@@ -29,6 +29,6 @@ class MetaDataDict(MetaDataConfigDict):
 RecordDict: TypeAlias = dict[str, T]
 
 
-class FileDict(RecordDict[T]):
+class FileDict(TypedDict, Generic[T]):
     metadata: MetaDataDict
     records: RecordDict[T]
