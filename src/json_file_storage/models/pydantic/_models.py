@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -24,3 +24,31 @@ class BaseMetaData(BaseModel):
 class FileMetaData(BaseMetaData):
     storage: Storage
     timestamps: Timestamp
+
+
+class FileData(BaseModel, Generic[T]):
+    metadata: FileMetaData
+    records: dict[int, T] = Field(
+        default_factory=dict,
+        description="Keyed collection of typed records",
+    )
+
+    class Config:
+        extra: str = "forbid"
+        json_schema_extra: ClassVar = {
+            "examples": [
+                {
+                    "metadata": {
+                        "version": "1.0",
+                        "title": "Example File",
+                        "description": "Sample metadata",
+                        "storage": {"type": "s3", "encryption": "AES256"},
+                        "timestamps": {
+                            "created_at": "2025-01-01T00:00:00Z",
+                            "updated_at": "2025-07-01T00:00:00Z",
+                        },
+                    },
+                    "records": {1: {"id": 1, "name": "Alice"}},
+                }
+            ]
+        }
