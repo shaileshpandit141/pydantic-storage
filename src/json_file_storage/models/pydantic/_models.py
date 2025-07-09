@@ -69,5 +69,4 @@ class FileData(BaseModel, Generic[T]):
                     "records": {1: {"id": 1, "name": "Alice"}},
                 }
             ]
-        },
-    }
+        }
