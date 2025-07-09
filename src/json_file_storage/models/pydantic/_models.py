@@ -6,26 +6,25 @@ from pydantic import BaseModel, Field, model_validator
 T = TypeVar("T", bound=BaseModel)
 
 
+def now_utc() -> datetime:
+    return datetime.now(timezone.utc)
+
+
 class Timestamp(BaseModel):
     created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        description="Creation timestamp (UTC)",
+        default_factory=now_utc, description="Creation timestamp (UTC)"
     )
     updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        description="Last update timestamp (UTC)",
+        default_factory=now_utc, description="Last update timestamp (UTC)"
     )
 
     @model_validator(mode="before")
     @classmethod
     def update_timestamp(cls, values: dict[str, Any]) -> dict[str, Any]:
-        values = dict(values or {})
-
+        now: datetime = now_utc()
         if "created_at" not in values:
-            values["created_at"] = datetime.now(timezone.utc)
-
-        values["updated_at"] = datetime.now(timezone.utc)
-
+            values["created_at"] = now
+        values["updated_at"] = now
         return values
 
 
@@ -34,19 +33,19 @@ class Storage(BaseModel):
     encryption: str = Field(..., description="Encryption method used (e.g., AES256)")
 
 
-class BaseMetaData(BaseModel):
+class BaseMetadata(BaseModel):
     version: str = Field(..., description="Schema or file version")
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
 
 
-class FileMetaData(BaseMetaData):
+class FileMetadata(BaseMetadata):
     storage: Storage
     timestamps: Timestamp
 
 
 class FileData(BaseModel, Generic[T]):
-    metadata: FileMetaData
+    metadata: FileMetadata
     records: dict[int, T] = Field(
         default_factory=dict,
         description="Keyed collection of typed records",
@@ -70,4 +69,5 @@ class FileData(BaseModel, Generic[T]):
                     "records": {1: {"id": 1, "name": "Alice"}},
                 }
             ]
-        }
+        },
+    }
