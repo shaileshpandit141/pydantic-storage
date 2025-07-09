@@ -12,10 +12,12 @@ def now_utc() -> datetime:
 
 class Timestamp(BaseModel):
     created_at: datetime = Field(
-        default_factory=now_utc, description="Creation timestamp (UTC)"
+        default_factory=now_utc,
+        description="Creation timestamp (UTC)",
     )
     updated_at: datetime = Field(
-        default_factory=now_utc, description="Last update timestamp (UTC)"
+        default_factory=now_utc,
+        description="Last update timestamp (UTC)",
     )
 
     @model_validator(mode="before")
