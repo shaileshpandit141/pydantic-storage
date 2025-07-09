@@ -36,7 +36,10 @@ class Storage(BaseModel):
 
 
 class BaseMetadata(BaseModel):
-    version: str = Field(..., description="Schema or file version")
+    version: str = Field(
+        default="1.0.0",
+        description="Schema or file version"
+    )
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
 
