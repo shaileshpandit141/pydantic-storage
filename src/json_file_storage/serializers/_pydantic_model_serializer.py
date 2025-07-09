@@ -11,17 +11,11 @@ class PydanticModelSerializer(AbstractPydanticModelSerializer[T]):
 
     def model_to_dict(self) -> RecordDict[Any]:
         """Convert the data structure to a dictionary."""
-        return {
-            "records": {
-                key: value.model_dump() for key, value in self.data["records"].items()
-            }
-        }
+        return {key: value.model_dump() for key, value in self.data.items()}
 
     def dict_to_model(self) -> RecordDict[T]:
         """Convert a dictionary to a data model."""
         return {
-            "records": {
-                key: self.pydantic_model.model_validate(value)
-                for key, value in self.data["records"].items()
-            }
+            key: self.pydantic_model.model_validate(value)
+            for key, value in self.data.items()
         }
