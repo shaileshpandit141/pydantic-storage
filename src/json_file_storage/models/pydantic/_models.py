@@ -38,7 +38,8 @@ class Storage(BaseModel):
 class BaseMetadata(BaseModel):
     version: str = Field(
         default="1.0.0",
-        description="Schema or file version"
+        description="Schema or file version",
+        pattern=r"^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?(\+[a-zA-Z0-9.]+)?$",
     )
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
