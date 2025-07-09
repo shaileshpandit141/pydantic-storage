@@ -1,13 +1,32 @@
-from typing import ClassVar, Generic, TypeVar
+from datetime import datetime, timezone
+from typing import Any, ClassVar, Generic, TypeVar
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 T = TypeVar("T", bound=BaseModel)
 
 
 class Timestamp(BaseModel):
-    created_at: str = Field(..., description="Creation timestamp (ISO 8601)")
-    updated_at: str = Field(..., description="Last update timestamp (ISO 8601)")
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        description="Creation timestamp (UTC)",
+    )
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        description="Last update timestamp (UTC)",
+    )
+
+    @model_validator(mode="before")
+    @classmethod
+    def update_timestamp(cls, values: dict[str, Any]) -> dict[str, Any]:
+        values = dict(values or {})
+
+        if "created_at" not in values:
+            values["created_at"] = datetime.now(timezone.utc)
+
+        values["updated_at"] = datetime.now(timezone.utc)
+
+        return values
 
 
 class Storage(BaseModel):
