@@ -19,3 +19,8 @@ class BaseMetaData(BaseModel):
     version: str = Field(..., description="Schema or file version")
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
+
+
+class FileMetaData(BaseMetaData):
+    storage: Storage
+    timestamps: Timestamp

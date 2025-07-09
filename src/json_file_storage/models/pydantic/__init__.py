@@ -1,5 +1,6 @@
 from ._models import (
     BaseMetaData,
+    FileMetaData,
     Storage,
     T,
     Timestamp,
@@ -7,6 +8,7 @@ from ._models import (
 
 __all__: list[str] = [
     "BaseMetaData",
+    "FileMetaData",
     "Storage",
     "T",
     "Timestamp",
