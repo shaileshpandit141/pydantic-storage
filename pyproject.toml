@@ -44,10 +44,7 @@ build-backend = "hatchling.build" # Build backend
 # Dependency groups
 # =================
 [dependency-groups]
-dev = [
-    "json-file-storage",
-    "pytest>=8.4.1",
-] # Development dependency group
+dev = ["json-file-storage", "pytest>=8.4.1"] # Development dependency group
 
 # ===============
 # UV tool sources
@@ -74,3 +71,12 @@ dev = ["pytest", "mypy", "ruff"] # Optional dev dependencies
 Homepage = "https://github.com/shaileshpandit141/json-file-storage"
 Repository = "https://github.com/shaileshpandit141/json-file-storage"
 Issues = "https://github.com/shaileshpandit141/json-file-storage/issues"
+
+# ===================
+# Tool Configurations
+# ===================
+
+# Disable ruff S101 rule for test casecases
+# -----------------------------------------
+[tool.ruff.per-file-ignores]
+"tests/*.py" = ["S101"]
