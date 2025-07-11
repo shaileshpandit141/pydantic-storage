@@ -1,8 +1,10 @@
 from datetime import datetime, timezone
 
-from pydantic import BaseModel
+import pytest
+from pydantic import BaseModel, ValidationError
 
 from src.json_file_storage.models.pydantic import (
+    Storage,
     Timestamp,
 )
 
@@ -30,3 +32,17 @@ def test_timestamp_custom_created_at() -> None:
     ts = Timestamp(created_at=custom_time)
     assert ts.created_at == custom_time
     assert ts.updated_at >= custom_time
+
+
+# === STORAGE TESTS ===
+
+
+def test_valid_storage() -> None:
+    s = Storage(type="s3", encryption="AES256")
+    assert s.type == "s3"
+    assert s.encryption == "AES256"
+
+
+def test_invalid_storage_missing_field() -> None:
+    with pytest.raises(ValidationError):
+        Storage(type="s3")  # type: ignore (missing encryption)
