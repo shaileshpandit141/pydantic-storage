@@ -1,4 +1,4 @@
-from typing import Generic, TypeAlias, TypedDict, TypeVar
+from typing import Generic, NotRequired, TypeAlias, TypedDict, TypeVar
 
 from pydantic import BaseModel
 
@@ -6,8 +6,8 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class TimestampDict(TypedDict):
-    created_at: str
-    updated_at: str
+    created_at: NotRequired[str]
+    updated_at: NotRequired[str]
 
 
 class StorageDict(TypedDict):
@@ -15,20 +15,20 @@ class StorageDict(TypedDict):
     encryption: str
 
 
-class MetaDataConfigDict(TypedDict):
+class BaseMetaDataDict(TypedDict):
     version: str
     title: str
     description: str
 
 
-class MetaDataDict(MetaDataConfigDict):
+class FileMetaDataDict(BaseMetaDataDict):
     storage: StorageDict
-    timestamps: TimestampDict
+    timestamps: NotRequired[TimestampDict]
 
 
 RecordDict: TypeAlias = dict[str, T]
 
 
-class FileDict(TypedDict, Generic[T]):
-    metadata: MetaDataDict
+class FileDataDict(TypedDict, Generic[T]):
+    metadata: FileMetaDataDict
     records: RecordDict[T]
