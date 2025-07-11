@@ -6,6 +6,7 @@ from pydantic import BaseModel, ValidationError
 
 from src.json_file_storage.models.pydantic import (
     BaseMetaData,
+    FileMetaData,
     Storage,
     Timestamp,
 )
@@ -64,3 +65,30 @@ def test_valid_metadata_version_pattern() -> None:
 def test_invalid_metadata_version_pattern() -> None:
     with pytest.raises(ValidationError):
         BaseMetaData(version="v1", title="Invalid", description="Bad version pattern")
+
+
+# === FILE METADATA TESTS ===
+
+
+def test_file_metadata_with_timestamps() -> None:
+    ts = Timestamp()
+    s = Storage(type="local", encryption="none")
+    meta = FileMetaData(
+        version="1.0.0",
+        title="File with TS",
+        description="File that has timestamps",
+        storage=s,
+        timestamps=ts,
+    )
+    assert isinstance(meta.timestamps, Timestamp)
+
+
+def test_file_metadata_without_timestamps() -> None:
+    s = Storage(type="s3", encryption="AES256")
+    meta = FileMetaData(
+        version="1.0.0",
+        title="File without TS",
+        description="Testing no timestamp",
+        storage=s,
+    )
+    assert meta.timestamps is None
