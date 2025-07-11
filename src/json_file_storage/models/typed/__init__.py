@@ -1,9 +1,9 @@
-from ._types import FileDict, MetaDataConfigDict, MetaDataDict, RecordDict, T
+from ._types import FileDataDict, BaseMetaDataDict, FileMetaDataDict, RecordDict, T
 
 __all__: list[str] = [
-    "FileDict",
-    "MetaDataConfigDict",
-    "MetaDataDict",
+    "FileDataDict",
+    "BaseMetaDataDict",
+    "FileMetaDataDict",
     "RecordDict",
     "T",
 ]
