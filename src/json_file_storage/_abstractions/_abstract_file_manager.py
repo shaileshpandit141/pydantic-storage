@@ -2,19 +2,22 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
-from json_file_storage.models.typed import FileDict, T
+from json_file_storage.models.typed import RecordsDict, T, FileDataDict
 
 
 class AbstractFileManager(ABC, Generic[T]):
     """Abstract base class for managing file operations."""
 
     def __init__(
-        self, file_path: str, pydantic_model: type[T], data: FileDict[T]
+        self,
+        file_path: str,
+        model_class: type[T],
+        data: FileDataDict[T],
     ) -> None:
         """Initialize the JsonFileManager."""
         self.file: Path = Path(file_path)
-        self.pydantic_model: type[T] = pydantic_model
-        self.data: FileDict[T] = data
+        self.model_class: type[T] = model_class
+        self.data: FileDataDict[T] = data
 
     @abstractmethod
     def exists(self) -> bool:
@@ -27,12 +30,12 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def read(self) -> FileDict[T]:
+    def read(self) -> FileDataDict[T]:
         """Read data from a JSON file and return it."""
         raise NotImplementedError
 
     @abstractmethod
-    def write(self, data: FileDict[T]) -> None:
+    def write(self, data: RecordsDict[T]) -> None:
         """Write data to a JSON file."""
         raise NotImplementedError
 
