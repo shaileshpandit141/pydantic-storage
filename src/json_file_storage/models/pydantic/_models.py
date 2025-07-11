@@ -47,7 +47,7 @@ class BaseMetaData(BaseModel):
 
 class FileMetaData(BaseMetaData):
     storage: Storage
-    timestamps: Timestamp
+    timestamps: Timestamp | None = None
 
 
 class FileData(BaseModel, Generic[T]):
