@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Any, ClassVar, Generic, TypeVar
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -57,22 +57,22 @@ class FileData(BaseModel, Generic[T]):
         description="Keyed collection of typed records",
     )
 
-    class Config:
-        extra: str = "forbid"
-        json_schema_extra: ClassVar = {
-            "examples": [
-                {
-                    "metadata": {
-                        "version": "1.0",
-                        "title": "Example File",
-                        "description": "Sample metadata",
-                        "storage": {"type": "s3", "encryption": "AES256"},
-                        "timestamps": {
-                            "created_at": "2025-01-01T00:00:00Z",
-                            "updated_at": "2025-07-01T00:00:00Z",
-                        },
+    model_config = ConfigDict(extra="forbid")
+
+    json_schema_extra: ClassVar = {
+        "examples": [
+            {
+                "metadata": {
+                    "version": "1.0",
+                    "title": "Example File",
+                    "description": "Sample metadata",
+                    "storage": {"type": "s3", "encryption": "AES256"},
+                    "timestamps": {
+                        "created_at": "2025-01-01T00:00:00Z",
+                        "updated_at": "2025-07-01T00:00:00Z",
                     },
-                    "records": {1: {"id": 1, "name": "Alice"}},
-                }
-            ]
-        }
+                },
+                "records": {1: {"id": 1, "name": "Alice"}},
+            }
+        ]
+    }
