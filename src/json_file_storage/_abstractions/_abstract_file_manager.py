@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Generic
 
 from json_file_storage.models.typed import RecordsDict, T, FileDataDict
+from json_file_storage.models.pydantic import FileData
 
 
 class AbstractFileManager(ABC, Generic[T]):
@@ -30,7 +31,7 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def read(self) -> FileDataDict[T]:
+    def read(self) -> FileData[T]:
         """Read data from a JSON file and return it."""
         raise NotImplementedError
 
