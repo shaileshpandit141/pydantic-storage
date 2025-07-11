@@ -1,9 +1,11 @@
+import re
 from datetime import datetime, timezone
 
 import pytest
 from pydantic import BaseModel, ValidationError
 
 from src.json_file_storage.models.pydantic import (
+    BaseMetaData,
     Storage,
     Timestamp,
 )
@@ -46,3 +48,19 @@ def test_valid_storage() -> None:
 def test_invalid_storage_missing_field() -> None:
     with pytest.raises(ValidationError):
         Storage(type="s3")  # type: ignore (missing encryption)
+
+
+# === METADATA TESTS ===
+
+
+def test_valid_metadata_version_pattern() -> None:
+    meta = BaseMetaData(
+        version="1.0.0", title="Test File", description="Testing metadata"
+    )
+    assert meta.version == "1.0.0"
+    assert re.match(r"^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?(\+[a-zA-Z0-9.]+)?$", meta.version)
+
+
+def test_invalid_metadata_version_pattern() -> None:
+    with pytest.raises(ValidationError):
+        BaseMetaData(version="v1", title="Invalid", description="Bad version pattern")
