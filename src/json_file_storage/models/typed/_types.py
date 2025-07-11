@@ -27,9 +27,9 @@ class FileMetaDataDict(BaseMetaDataDict):
     timestamps: NotRequired[TimestampDict]
 
 
-RecordDict: TypeAlias = dict[int, T]
+RecordsDict: TypeAlias = dict[int, T]
 
 
 class FileDataDict(TypedDict, Generic[T]):
     metadata: FileMetaDataDict
-    records: RecordDict[T]
+    records: RecordsDict[T]
