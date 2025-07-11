@@ -1,4 +1,5 @@
 from typing import Generic, NotRequired, TypeAlias, TypedDict, TypeVar
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -6,8 +7,8 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class TimestampDict(TypedDict):
-    created_at: NotRequired[str]
-    updated_at: NotRequired[str]
+    created_at: NotRequired[datetime]
+    updated_at: NotRequired[datetime]
 
 
 class StorageDict(TypedDict):
