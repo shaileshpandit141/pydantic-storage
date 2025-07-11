@@ -35,7 +35,7 @@ class Storage(BaseModel):
     encryption: str = Field(..., description="Encryption method used (e.g., AES256)")
 
 
-class BaseMetadata(BaseModel):
+class BaseMetaData(BaseModel):
     version: str = Field(
         default="1.0.0",
         description="Schema or file version",
@@ -45,13 +45,13 @@ class BaseMetadata(BaseModel):
     description: str = Field(..., description="Brief description of the file contents")
 
 
-class FileMetadata(BaseMetadata):
+class FileMetaData(BaseMetaData):
     storage: Storage
     timestamps: Timestamp
 
 
 class FileData(BaseModel, Generic[T]):
-    metadata: FileMetadata
+    metadata: FileMetaData
     records: dict[int, T] = Field(
         default_factory=dict,
         description="Keyed collection of typed records",
