@@ -6,6 +6,7 @@ from pydantic import BaseModel, ValidationError
 
 from src.json_file_storage.models.pydantic import (
     BaseMetaData,
+    FileData,
     FileMetaData,
     Storage,
     Timestamp,
@@ -92,3 +93,42 @@ def test_file_metadata_without_timestamps() -> None:
         storage=s,
     )
     assert meta.timestamps is None
+
+
+# === FILE DATA TESTS ===
+
+
+def test_file_data_with_records() -> None:
+    storage = Storage(type="s3", encryption="AES256")
+    metadata = FileMetaData(
+        version="1.0.0",
+        title="Test File",
+        description="File with data",
+        storage=storage,
+    )
+    record = DummyRecord(id=1, name="Alice")
+    file_data: FileData[DummyRecord] = FileData[DummyRecord](
+        metadata=metadata, records={1: record}
+    )
+
+    assert file_data.records[1].name == "Alice"
+    assert isinstance(file_data.metadata, FileMetaData)
+
+
+def test_file_data_forbid_extra_fields() -> None:
+    storage = Storage(type="local", encryption="none")
+    metadata = FileMetaData(
+        version="1.0.0",
+        title="Test File",
+        description="Extra field test",
+        storage=storage,
+    )
+    record = DummyRecord(id=2, name="Bob")
+    data: dict[str, FileMetaData | dict[int, DummyRecord] | str] = {
+        "metadata": metadata,
+        "records": {2: record},
+        "extra": "not allowed",
+    }
+
+    with pytest.raises(ValidationError):
+        FileData[DummyRecord](**data)  # type: ignore[arg-type]
