@@ -3,8 +3,8 @@ from pathlib import Path
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
 from json_file_storage.exceptions import JSONDecodeError, JSONEncodeError
-from json_file_storage.models.typed import FileDict, T
-
+from json_file_storage.models.typed import T, RecordsDict
+from json_file_storage.models.pydantic import FileData
 
 class JsonFileManager(AbstractFileManager[T]):
     """A class for managing JSON file operations."""
@@ -36,7 +36,7 @@ class JsonFileManager(AbstractFileManager[T]):
             # Create the file (or update timestamp if it exists)
             self.file.touch(exist_ok=True)
 
-    def read(self) -> FileDict[T]:
+    def read(self) -> FileData[T]:
         """
         Read data from a JSON file and return it.
 
@@ -45,11 +45,12 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         try:
-            return json.loads(self.file.read_text(encoding="utf-8"))
+            file_data_text: str = self.file.read_text(encoding="utf-8")
+            return FileData[T].model_validate_json(file_data_text)
         except json.JSONDecodeError as error:
             raise JSONDecodeError(error) from error
 
-    def write(self, data: FileDict[T]) -> None:
+    def write(self, data: RecordsDict[T]) -> None:
         """
         Write data to a JSON file.
 
