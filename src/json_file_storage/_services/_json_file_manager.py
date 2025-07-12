@@ -1,8 +1,8 @@
-import json
 from pathlib import Path
+from pydantic import ValidationError as PydanticValidationError
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.exceptions import JSONDecodeError, JSONEncodeError
+from json_file_storage.exceptions import JSONEncodeError, ValidationError
 from json_file_storage.models.typed import T, RecordsDict
 from json_file_storage.models.pydantic import FileData
 
@@ -61,8 +61,8 @@ class JsonFileManager(AbstractFileManager[T]):
         try:
             file_data_text: str = self.file.read_text(encoding="utf-8")
             return FileData[T].model_validate_json(file_data_text)
-        except json.JSONDecodeError as error:
-            raise JSONDecodeError(error) from error
+        except PydanticValidationError as error:
+            raise ValidationError(error) from error
 
     def write(self, data: RecordsDict[T]) -> None:
         """
