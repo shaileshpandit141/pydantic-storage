@@ -79,7 +79,19 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         try:
-            self.file.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+            stored_data: FileData[T] = self.read()
+            stored_data.metadata.version = self.data.metadata.version
+            stored_data.metadata.title = self.data.metadata.title
+            stored_data.metadata.description = self.data.metadata.description
+            stored_data.metadata.storage = self.data.metadata.storage
+            stored_data.metadata.timestamps = self.data.metadata.timestamps
+            stored_data.records = {**stored_data.records, **self.data.records}
+
+            # Convert pydantic model to json string
+            json_data: str = stored_data.model_dump_json(indent=2)
+
+            # Write Json string to stored file.
+            self.file.write_text(json_data)
         except TypeError as error:
             raise JSONEncodeError(error) from error
 
