@@ -2,7 +2,7 @@ from pathlib import Path
 from pydantic import ValidationError as PydanticValidationError
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.exceptions import JSONEncodeError, ValidationError
+from json_file_storage.exceptions import ValidationError
 from json_file_storage.models.typed import T, RecordsDict
 from json_file_storage.models.pydantic import FileData
 
@@ -78,22 +78,19 @@ class JsonFileManager(AbstractFileManager[T]):
             None
 
         """
-        try:
-            stored_data: FileData[T] = self.read()
-            stored_data.metadata.version = self.data.metadata.version
-            stored_data.metadata.title = self.data.metadata.title
-            stored_data.metadata.description = self.data.metadata.description
-            stored_data.metadata.storage = self.data.metadata.storage
-            stored_data.metadata.timestamps = self.data.metadata.timestamps
-            stored_data.records = {**stored_data.records, **self.data.records}
+        stored_data: FileData[T] = self.read()
+        stored_data.metadata.version = self.data.metadata.version
+        stored_data.metadata.title = self.data.metadata.title
+        stored_data.metadata.description = self.data.metadata.description
+        stored_data.metadata.storage = self.data.metadata.storage
+        stored_data.metadata.timestamps = self.data.metadata.timestamps
+        stored_data.records = {**stored_data.records, **self.data.records}
 
-            # Convert pydantic model to json string
-            json_data: str = stored_data.model_dump_json(indent=2)
+        # Convert pydantic model to json string
+        json_data: str = stored_data.model_dump_json(indent=2)
 
-            # Write Json string to stored file.
-            self.file.write_text(json_data)
-        except TypeError as error:
-            raise JSONEncodeError(error) from error
+        # Write Json string to stored file.
+        self.file.write_text(json_data)
 
     def delete(self) -> None:
         """
