@@ -6,8 +6,22 @@ from json_file_storage.exceptions import JSONDecodeError, JSONEncodeError
 from json_file_storage.models.typed import T, RecordsDict
 from json_file_storage.models.pydantic import FileData
 
+
 class JsonFileManager(AbstractFileManager[T]):
     """A class for managing JSON file operations."""
+
+    def __init__(
+        self,
+        file_path: str,
+        model_class: type[T],
+        data: FileData[T],
+    ) -> None:
+        """Call parent initializer"""
+        super().__init__(file_path, model_class, data)
+
+        # Create file if user create instance of self class
+        if not self.exists():
+            self.create()
 
     def exists(self) -> bool:
         """
