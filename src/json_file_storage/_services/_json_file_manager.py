@@ -90,7 +90,7 @@ class JsonFileManager(AbstractFileManager[T]):
         stored_data.metadata.description = self.data.metadata.description
         stored_data.metadata.storage = self.data.metadata.storage
         stored_data.metadata.timestamps = self.data.metadata.timestamps
-        stored_data.records = {**stored_data.records, **self.data.records}
+        stored_data.records = {**stored_data.records, **data}
 
         # Convert pydantic model to json string
         json_data: str = stored_data.model_dump_json(indent=2)
