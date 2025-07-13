@@ -11,12 +11,12 @@ class AbstractFileManager(ABC, Generic[T]):
 
     def __init__(
         self,
-        file_path: str,
+        file_path: Path | str,
         model_class: type[T],
         data: FileData[T],
     ) -> None:
         """Initialize the JsonFileManager."""
-        self.file: Path = Path(file_path)
+        self.file_path: Path = Path(file_path) if isinstance(file_path, str) else file_path
         self.model_class: type[T] = model_class
         self.data: FileData[T] = data
 

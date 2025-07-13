@@ -27,7 +27,7 @@ class JsonFileManager(AbstractFileManager[T]):
             json_data: str = self.data.model_dump_json(indent=2)
 
             # Write Json string to stored file.
-            self.file.write_text(json_data)
+            self.file_path.write_text(json_data)
 
     def exists(self) -> bool:
         """
@@ -37,7 +37,7 @@ class JsonFileManager(AbstractFileManager[T]):
             bool: True if the file exists, False otherwise.
 
         """
-        return self.file.exists()
+        return self.file_path.exists()
 
     def create(self) -> None:
         """
@@ -50,11 +50,11 @@ class JsonFileManager(AbstractFileManager[T]):
         # Check if the file already exists or not
         if not self.exists():
             # Create parent directories if they don't exist
-            if self.file.parent != Path():
-                self.file.parent.mkdir(parents=True, exist_ok=True)
+            if self.file_path.parent != Path():
+                self.file_path.parent.mkdir(parents=True, exist_ok=True)
 
             # Create the file (or update timestamp if it exists)
-            self.file.touch(exist_ok=True)
+            self.file_path.touch(exist_ok=True)
 
     def read(self) -> FileData[T]:
         """
@@ -65,7 +65,7 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         try:
-            file_data_text: str = self.file.read_text(encoding="utf-8")
+            file_data_text: str = self.file_path.read_text(encoding="utf-8")
             return FileData[T].model_validate_json(file_data_text)
         except PydanticValidationError as error:
             raise ValidationError(error) from error
@@ -96,7 +96,7 @@ class JsonFileManager(AbstractFileManager[T]):
         json_data: str = stored_data.model_dump_json(indent=2)
 
         # Write Json string to stored file.
-        self.file.write_text(json_data)
+        self.file_path.write_text(json_data)
 
     def delete(self) -> None:
         """
@@ -109,5 +109,5 @@ class JsonFileManager(AbstractFileManager[T]):
             None
 
         """
-        if self.exists() and self.file.is_file():
-            self.file.unlink()
+        if self.exists() and self.file_path.is_file():
+            self.file_path.unlink()
