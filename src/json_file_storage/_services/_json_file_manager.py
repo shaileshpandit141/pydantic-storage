@@ -19,15 +19,15 @@ class JsonFileManager(AbstractFileManager[T]):
         """Call parent initializer"""
         super().__init__(file_path, model_class, data)
 
-        # Create file if user create instance of self class and add initial data.
+        # Create file if user create instance of self class
         if not self.exists():
             self.create()
 
-            # Convert pydantic model to json string
-            json_data: str = self.data.model_dump_json(indent=2)
+        # Convert pydantic model to json string
+        json_data: str = self.data.model_dump_json(indent=2)
 
-            # Write Json string to stored file.
-            self.file_path.write_text(json_data)
+        # Write Json string to stored file.
+        self.file_path.write_text(json_data)
 
     def exists(self) -> bool:
         """
