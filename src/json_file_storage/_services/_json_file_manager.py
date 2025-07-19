@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from pydantic import ValidationError as PydanticValidationError
+from pydantic import ValidationError as PydanticValidationError, TypeAdapter
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
 from json_file_storage.exceptions import ValidationError
@@ -105,7 +105,8 @@ class JsonFileManager(AbstractFileManager[T]):
         """
         try:
             file_data_text: str = self.file_path.read_text(encoding="utf-8")
-            return FileData[T].model_validate_json(file_data_text)
+            adapter: TypeAdapter[FileData[T]] = TypeAdapter(FileData[self.model_class])
+            return adapter.validate_json(file_data_text)
         except PydanticValidationError as error:
             raise ValidationError(error) from error
 
