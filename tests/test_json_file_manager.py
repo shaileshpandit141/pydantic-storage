@@ -40,10 +40,33 @@ def test_read_method(
     manager: JsonFileManager[User],
 ) -> None:
     """Testing read method"""
-
     data: FileData[User] = manager.read()
 
+    # Check present records
     assert isinstance(data.metadata.version, str)
     assert isinstance(data.metadata.title, str)
     assert isinstance(data.metadata.description, str)
     assert isinstance(data.records, dict)
+
+
+def test_write_and_read_users(
+    manager: JsonFileManager[User],
+) -> None:
+    """Testing write method"""
+    users: dict[int, User] = {
+        1: User(id=1, name="Alice"),
+        2: User(id=2, name="Bob"),
+        3: User(id=3, name="Charlie"),
+    }
+
+    # Write all records to json file
+    manager.write(users)
+
+    # Read all record from json file
+    data: FileData[User] = manager.read()
+
+    # Check all records are present
+    assert len(data.records) == 3
+    assert data.records[1].name == "Alice"
+    assert data.records[2].name == "Bob"
+    assert data.records[3].name == "Charlie"
