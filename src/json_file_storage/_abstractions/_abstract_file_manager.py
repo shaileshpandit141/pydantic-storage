@@ -31,6 +31,11 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
+    def file_initializer(self) -> None:
+        """Initialize file with default content"""
+        raise NotImplementedError
+
+    @abstractmethod
     def create(self) -> None:
         """Create a new JSON file if it does not exist."""
         raise NotImplementedError

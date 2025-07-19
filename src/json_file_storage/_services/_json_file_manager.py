@@ -3,8 +3,18 @@ from pydantic import ValidationError as PydanticValidationError
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
 from json_file_storage.exceptions import ValidationError
-from json_file_storage.models.typed import T, RecordsDict
+from json_file_storage.models.typed import (
+    T,
+    RecordsDict,
+    BaseMetaDataDict,
+    FileDataDict,
+)
 from json_file_storage.models.pydantic import FileData
+from datetime import datetime, timezone
+
+
+def now_utc() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class JsonFileManager(AbstractFileManager[T]):
@@ -14,14 +24,13 @@ class JsonFileManager(AbstractFileManager[T]):
         self,
         file_path: str,
         model_class: type[T],
-        data: FileData[T],
+        metadata: BaseMetaDataDict,
     ) -> None:
         """Call parent initializer"""
-        super().__init__(file_path, model_class, data)
+        super().__init__(file_path, model_class, metadata)
 
-        # Create file if user create instance of self class
-        if not self.exists():
-            self.create()
+        # Initialize file with default content
+        self.file_initializer()
 
     def exists(self) -> bool:
         """
@@ -38,6 +47,30 @@ class JsonFileManager(AbstractFileManager[T]):
         if self.exists():
             return self.file_path.stat().st_size == 0
         raise FileNotFoundError("File does not exist at given path")
+
+    def file_initializer(self) -> None:
+        """Initialize file with default content"""
+
+        # Create empty file
+        self.create()
+
+        # Create default file data structure with it's values
+        file_meta_data_dict: FileDataDict[T] = {
+            "metadata": {
+                **self.metadata,
+                "storage": {
+                    "type": "file",
+                    "encryption": "none",
+                },
+            },
+            "records": {},
+        }
+
+        # Validate all provided data as for model
+        file_data: FileData[T] = FileData(**file_meta_data_dict)  # type: ignore
+
+        # Write Json string to stored file.
+        self.file_path.write_text(file_data.model_dump_json(indent=2))
 
     def create(self) -> None:
         """
