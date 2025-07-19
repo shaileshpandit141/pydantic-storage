@@ -57,15 +57,28 @@ class JsonFileManager(AbstractFileManager[T]):
                     "type": "file",
                     "encryption": "none",
                 },
+                "timestamps": {
+                    "created_at": now_utc(),
+                    "updated_at": now_utc(),
+                },
             },
             "records": {},
         }
 
         # Validate all provided data as for model
-        file_data: FileData[T] = FileData(**file_meta_data_dict)  # type: ignore
+        current_data: FileData[T] = FileData(**file_meta_data_dict)  # type: ignore
+
+        # Get Stored Data and Update timestamps
+        if not self.is_file_size_zero():
+            stored_data: FileData[T] = self.read()
+            current_data.metadata.timestamps = self.update_timestamps(
+                timestamps=stored_data.metadata.timestamps
+            )
 
         # Write Json string to stored file.
-        self.file_path.write_text(file_data.model_dump_json(indent=2))
+        self.file_path.write_text(
+            f"{current_data.model_dump_json(indent=2)}\n",
+        )
 
     def create(self) -> None:
         """
@@ -114,15 +127,8 @@ class JsonFileManager(AbstractFileManager[T]):
         stored_data.metadata.version = self.metadata["version"]
         stored_data.metadata.title = self.metadata["title"]
         stored_data.metadata.description = self.metadata["description"]
-
-        created_at: datetime = (
-            now_utc()
-            if stored_data.metadata.timestamps is None
-            else stored_data.metadata.timestamps.created_at
-        )
-        stored_data.metadata.timestamps = Timestamp(
-            created_at=created_at,
-            updated_at=now_utc(),
+        stored_data.metadata.timestamps = self.update_timestamps(
+            stored_data.metadata.timestamps
         )
         stored_data.records = {**stored_data.records, **data}
 
@@ -130,7 +136,18 @@ class JsonFileManager(AbstractFileManager[T]):
         json_data: str = stored_data.model_dump_json(indent=2)
 
         # Write Json string to stored file.
-        self.file_path.write_text(json_data)
+        self.file_path.write_text(f"{json_data}\n")
+
+    def update_timestamps(self, timestamps: Timestamp | None) -> Timestamp:
+        """Return updated timestamp"""
+        created_at: datetime = (
+            now_utc() if timestamps is None else timestamps.created_at
+        )
+
+        return Timestamp(
+            created_at=created_at,
+            updated_at=now_utc(),
+        )
 
     def delete(self) -> None:
         """
