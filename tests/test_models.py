@@ -19,7 +19,9 @@ class DummyRecord(BaseModel):
     name: str
 
 
-# === TIMESTAMP TESTS ===
+# ===============
+# TIMESTAMP TESTS
+# ===============
 
 
 def test_timestamp_defaults() -> None:
@@ -38,7 +40,9 @@ def test_timestamp_custom_created_at() -> None:
     assert ts.updated_at >= custom_time
 
 
-# === STORAGE TESTS ===
+# =============
+# STORAGE TESTS
+# =============
 
 
 def test_valid_storage() -> None:
@@ -52,7 +56,9 @@ def test_invalid_storage_missing_field() -> None:
         Storage(type="s3")  # type: ignore (missing encryption)
 
 
-# === METADATA TESTS ===
+# ==============
+# METADATA TESTS
+# ==============
 
 
 def test_valid_metadata_version_pattern() -> None:
@@ -68,7 +74,9 @@ def test_invalid_metadata_version_pattern() -> None:
         BaseMetaData(version="v1", title="Invalid", description="Bad version pattern")
 
 
-# === FILE METADATA TESTS ===
+# ===================
+# FILE METADATA TESTS
+# ===================
 
 
 def test_file_metadata_with_timestamps() -> None:
@@ -95,7 +103,9 @@ def test_file_metadata_without_timestamps() -> None:
     assert meta.timestamps is None
 
 
-# === FILE DATA TESTS ===
+# ===============
+# FILE DATA TESTS
+# ===============
 
 
 def test_file_data_with_records() -> None:
