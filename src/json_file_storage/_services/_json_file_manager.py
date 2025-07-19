@@ -10,11 +10,6 @@ from json_file_storage.models.typed import (
     FileDataDict,
 )
 from json_file_storage.models.pydantic import FileData
-from datetime import datetime, timezone
-
-
-def now_utc() -> datetime:
-    return datetime.now(timezone.utc)
 
 
 class JsonFileManager(AbstractFileManager[T]):
@@ -47,9 +42,7 @@ class JsonFileManager(AbstractFileManager[T]):
 
     def is_file_size_zero(self) -> bool:
         """To Check file size is zero or not"""
-        if self.exists():
-            return self.file_path.stat().st_size == 0
-        raise FileNotFoundError("File does not exist at given path")
+        return self.file_path.stat().st_size == 0
 
     def file_initializer(self) -> None:
         """Initialize file with default content"""
@@ -83,14 +76,12 @@ class JsonFileManager(AbstractFileManager[T]):
             None
 
         """
-        # Check if the file already exists or not
-        if not self.exists():
-            # Create parent directories if they don't exist
-            if self.file_path.parent != Path():
-                self.file_path.parent.mkdir(parents=True, exist_ok=True)
+        # Create parent directories if they don't exist
+        if self.file_path.parent != Path():
+            self.file_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # Create the file (or update timestamp if it exists)
-            self.file_path.touch(exist_ok=True)
+        # Create the file (or update timestamp if it exists)
+        self.file_path.touch(exist_ok=True)
 
     def read(self) -> FileData[T]:
         """
