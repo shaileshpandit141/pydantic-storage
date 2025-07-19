@@ -53,7 +53,7 @@ class FileMetaData(BaseMetaData):
 class FileData(BaseModel, Generic[T]):
     metadata: FileMetaData
     records: dict[int, T] = Field(
-        default_factory=dict,
+        default_factory=dict[int, T],
         description="Keyed collection of typed records",
     )
 
