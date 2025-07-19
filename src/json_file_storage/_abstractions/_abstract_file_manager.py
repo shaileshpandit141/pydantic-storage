@@ -16,7 +16,7 @@ class AbstractFileManager(ABC, Generic[T]):
         data: FileData[T],
     ) -> None:
         """Initialize the JsonFileManager."""
-        self.file: Path = Path(file_path)
+        self.file_path: Path = Path(file_path)
         self.model_class: type[T] = model_class
         self.data: FileData[T] = data
 
