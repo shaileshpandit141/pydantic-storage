@@ -33,6 +33,12 @@ class JsonFileManager(AbstractFileManager[T]):
         """
         return self.file_path.exists()
 
+    def is_file_size_zero(self) -> bool:
+        """To Check file size is zero or not"""
+        if self.exists():
+            return self.file_path.stat().st_size == 0
+        raise FileNotFoundError("File does not exist at given path")
+
     def create(self) -> None:
         """
         Create a new JSON file if it does not exist.
