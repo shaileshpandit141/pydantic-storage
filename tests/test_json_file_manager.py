@@ -19,7 +19,7 @@ class User(BaseModel):
 
 
 @pyt.fixture
-def manager_instance() -> JsonFileManager[User]:
+def manager() -> JsonFileManager[User]:
     return JsonFileManager[User](
         file_path="./users.json",
         model_class=User,
@@ -32,7 +32,7 @@ def manager_instance() -> JsonFileManager[User]:
 
 
 def test_json_file_manager_instance_created(
-    manager_instance: JsonFileManager[User],
+    manager: JsonFileManager[User],
 ) -> None:
     """Testing json file manager instance creation"""
-    assert isinstance(manager_instance, JsonFileManager)
+    assert isinstance(manager, JsonFileManager)
