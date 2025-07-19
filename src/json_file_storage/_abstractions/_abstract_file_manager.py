@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
-from json_file_storage.models.typed import RecordsDict, T
+from json_file_storage.models.typed import RecordsDict, T, BaseMetaDataDict
 from json_file_storage.models.pydantic import FileData
 
 
@@ -13,16 +13,26 @@ class AbstractFileManager(ABC, Generic[T]):
         self,
         file_path: Path | str,
         model_class: type[T],
-        data: FileData[T],
+        metadata: BaseMetaDataDict,
     ) -> None:
         """Initialize the JsonFileManager."""
-        self.file_path: Path = Path(file_path) if isinstance(file_path, str) else file_path
+        self.file_path: Path = Path(file_path)
         self.model_class: type[T] = model_class
-        self.data: FileData[T] = data
+        self.metadata: BaseMetaDataDict = metadata
 
     @abstractmethod
     def exists(self) -> bool:
         """Check if the JSON file exists."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def is_file_size_zero(self) -> bool:
+        """Check wheather a file size zero or not"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def file_initializer(self) -> None:
+        """Initialize file with default content"""
         raise NotImplementedError
 
     @abstractmethod

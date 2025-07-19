@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "title": "User records",
+    "description": "User record descriptions",
+    "storage": {
+      "type": "file",
+      "encryption": "none"
+    },
+    "timestamps": {
+      "created_at": "2025-07-19T09:45:32.684804Z",
+      "updated_at": "2025-07-19T11:23:28.552165Z"
+    }
+  },
+  "records": {
+    "1": {
+      "id": 1,
+      "name": "Alice"
+    },
+    "2": {
+      "id": 2,
+      "name": "Bob"
+    },
+    "3": {
+      "id": 3,
+      "name": "Charlie"
+    }
+  }
+}
