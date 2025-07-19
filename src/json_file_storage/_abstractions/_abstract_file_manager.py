@@ -26,7 +26,7 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def is_size_zero(self) -> bool:
+    def is_file_size_zero(self) -> bool:
         """Check wheather a file size zero or not"""
         raise NotImplementedError
 
