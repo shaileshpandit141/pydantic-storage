@@ -25,8 +25,9 @@ class JsonFileManager(AbstractFileManager[T]):
         """Call parent initializer"""
         super().__init__(file_path, model_class, metadata)
 
+        # Create empty file
         if not self.exists():
-            raise FileNotFoundError("File does not exist on given path")
+            self.create()
 
         # Initialize file with default content
         self.file_initializer()
@@ -47,9 +48,6 @@ class JsonFileManager(AbstractFileManager[T]):
 
     def file_initializer(self) -> None:
         """Initialize file with default content"""
-
-        # Create empty file
-        self.create()
 
         # Create default file data structure with it's values
         file_meta_data_dict: FileDataDict[T] = {
