@@ -1,8 +1,8 @@
-from src.json_file_storage._services._json_file_manager import JsonFileManager
-from pydantic import BaseModel
 import pytest as pyt
-from src.json_file_storage.models.pydantic import FileData
+from pydantic import BaseModel
 
+from src.json_file_storage._services._json_file_manager import JsonFileManager
+from src.json_file_storage.models.pydantic import FileData
 
 # ====================
 # JSONFILEMANAGER TEST

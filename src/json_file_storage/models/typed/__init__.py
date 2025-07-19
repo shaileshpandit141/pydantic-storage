@@ -1,4 +1,4 @@
-from ._types import FileDataDict, BaseMetaDataDict, FileMetaDataDict, RecordsDict, T
+from ._types import BaseMetaDataDict, FileDataDict, FileMetaDataDict, RecordsDict, T
 
 __all__: list[str] = [
     "FileDataDict",

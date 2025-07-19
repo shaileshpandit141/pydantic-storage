@@ -1,5 +1,5 @@
-from typing import Generic, NotRequired, TypeAlias, TypedDict, TypeVar
 from datetime import datetime
+from typing import Generic, NotRequired, TypeAlias, TypedDict, TypeVar
 
 from pydantic import BaseModel
 
