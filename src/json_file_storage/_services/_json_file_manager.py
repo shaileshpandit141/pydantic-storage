@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 from pydantic import ValidationError as PydanticValidationError
 
@@ -9,7 +10,7 @@ from json_file_storage.models.typed import (
     BaseMetaDataDict,
     FileDataDict,
 )
-from json_file_storage.models.pydantic import FileData
+from json_file_storage.models.pydantic import FileData, now_utc, Timestamp
 
 
 class JsonFileManager(AbstractFileManager[T]):
@@ -112,12 +113,20 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         stored_data: FileData[T] = self.read()
-        stored_data.metadata.version = self.data.metadata.version
-        stored_data.metadata.title = self.data.metadata.title
-        stored_data.metadata.description = self.data.metadata.description
-        stored_data.metadata.storage = self.data.metadata.storage
-        stored_data.metadata.timestamps = self.data.metadata.timestamps
-        stored_data.records = {**stored_data.records, **self.data.records}
+        stored_data.metadata.version = self.metadata["version"]
+        stored_data.metadata.title = self.metadata["title"]
+        stored_data.metadata.description = self.metadata["description"]
+
+        created_at: datetime = (
+            now_utc()
+            if stored_data.metadata.timestamps is None
+            else stored_data.metadata.timestamps.created_at
+        )
+        stored_data.metadata.timestamps = Timestamp(
+            created_at=created_at,
+            updated_at=now_utc(),
+        )
+        stored_data.records = {**stored_data.records, **data}
 
         # Convert pydantic model to json string
         json_data: str = stored_data.model_dump_json(indent=2)
