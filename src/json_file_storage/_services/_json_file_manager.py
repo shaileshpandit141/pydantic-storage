@@ -29,6 +29,9 @@ class JsonFileManager(AbstractFileManager[T]):
         """Call parent initializer"""
         super().__init__(file_path, model_class, metadata)
 
+        if not self.exists():
+            raise FileNotFoundError("File does not exist on given path")
+
         # Initialize file with default content
         self.file_initializer()
 
