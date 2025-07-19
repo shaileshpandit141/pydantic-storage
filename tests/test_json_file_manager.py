@@ -17,9 +17,8 @@ class User(BaseModel):
 # ====================
 
 
-def test_create_json_file_manager_instance() -> None:
-    """Testing json file manager instance creation"""
-    manager: JsonFileManager[User] = JsonFileManager(
+def initilize_json_file_manager() -> JsonFileManager[User]:
+    return JsonFileManager[User](
         file_path="./users.json",
         model_class=User,
         metadata={
@@ -28,5 +27,10 @@ def test_create_json_file_manager_instance() -> None:
             "description": "User record descriptions",
         },
     )
+
+
+def test_create_json_file_manager_instance() -> None:
+    """Testing json file manager instance creation"""
+    manager: JsonFileManager[User] = initilize_json_file_manager()
 
     assert isinstance(manager, JsonFileManager)
