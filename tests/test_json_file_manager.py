@@ -1,5 +1,6 @@
 from src.json_file_storage._services._json_file_manager import JsonFileManager
 from pydantic import BaseModel
+import pytest as pyt
 
 
 # =====================
@@ -17,7 +18,8 @@ class User(BaseModel):
 # ====================
 
 
-def initilize_json_file_manager() -> JsonFileManager[User]:
+@pyt.fixture
+def manager_instance() -> JsonFileManager[User]:
     return JsonFileManager[User](
         file_path="./users.json",
         model_class=User,
@@ -29,8 +31,8 @@ def initilize_json_file_manager() -> JsonFileManager[User]:
     )
 
 
-def test_create_json_file_manager_instance() -> None:
+def test_json_file_manager_instance_created(
+    manager_instance: JsonFileManager[User],
+) -> None:
     """Testing json file manager instance creation"""
-    manager: JsonFileManager[User] = initilize_json_file_manager()
-
-    assert isinstance(manager, JsonFileManager)
+    assert isinstance(manager_instance, JsonFileManager)
