@@ -78,5 +78,5 @@ Issues = "https://github.com/shaileshpandit141/json-file-storage/issues"
 
 # Disable ruff S101 rule for test casecases
 # -----------------------------------------
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*.py" = ["S101"]
