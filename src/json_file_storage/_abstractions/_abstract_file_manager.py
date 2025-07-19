@@ -26,6 +26,11 @@ class AbstractFileManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
+    def is_size_zero(self) -> bool:
+        """Check wheather a file size zero or not"""
+        raise NotImplementedError
+
+    @abstractmethod
     def create(self) -> None:
         """Create a new JSON file if it does not exist."""
         raise NotImplementedError
