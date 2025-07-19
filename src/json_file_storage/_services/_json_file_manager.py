@@ -29,11 +29,6 @@ class JsonFileManager(AbstractFileManager[T]):
         if not self.exists():
             self.create()
 
-        # Convert pydantic model to json string
-        json_data: str = self.data.model_dump_json(indent=2)
-
-        # Write Json string to stored file.
-        self.file_path.write_text(json_data)
         # Initialize file with default content
         self.file_initializer()
 
@@ -93,14 +88,6 @@ class JsonFileManager(AbstractFileManager[T]):
             None
 
         """
-        # Check if the file already exists or not
-        if not self.exists():
-            # Create parent directories if they don't exist
-            if self.file_path.parent != Path():
-                self.file_path.parent.mkdir(parents=True, exist_ok=True)
-
-            # Create the file (or update timestamp if it exists)
-            self.file_path.touch(exist_ok=True)
         # Create parent directories if they don't exist
         if self.file_path.parent != Path():
             self.file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -118,7 +105,6 @@ class JsonFileManager(AbstractFileManager[T]):
         """
         try:
             file_data_text: str = self.file_path.read_text(encoding="utf-8")
-            return FileData[T].model_validate_json(file_data_text)
             adapter: TypeAdapter[FileData[T]] = TypeAdapter(FileData[self.model_class])
             return adapter.validate_json(file_data_text)
         except PydanticValidationError as error:
@@ -139,11 +125,6 @@ class JsonFileManager(AbstractFileManager[T]):
 
         """
         stored_data: FileData[T] = self.read()
-        stored_data.metadata.version = self.data.metadata.version
-        stored_data.metadata.title = self.data.metadata.title
-        stored_data.metadata.description = self.data.metadata.description
-        stored_data.metadata.storage = self.data.metadata.storage
-        stored_data.metadata.timestamps = self.data.metadata.timestamps
         stored_data.metadata.version = self.metadata["version"]
         stored_data.metadata.title = self.metadata["title"]
         stored_data.metadata.description = self.metadata["description"]
@@ -156,7 +137,6 @@ class JsonFileManager(AbstractFileManager[T]):
         json_data: str = stored_data.model_dump_json(indent=2)
 
         # Write Json string to stored file.
-        self.file_path.write_text(json_data)
         self.file_path.write_text(f"{json_data}\n")
 
     def update_timestamps(self, timestamps: Timestamp | None) -> Timestamp:
