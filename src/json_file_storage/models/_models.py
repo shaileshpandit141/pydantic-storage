@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
-from typing import Any, ClassVar, Generic, TypeVar
+from typing import Any, ClassVar, Generic
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-T = TypeVar("T", bound=BaseModel)
+from ..types import T
 
 
 def now_utc() -> datetime:

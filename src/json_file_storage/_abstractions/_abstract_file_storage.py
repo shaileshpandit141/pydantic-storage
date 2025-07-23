@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Generic
 
-from json_file_storage.models.typed import T
+from json_file_storage.types import T
 
 
 class AbstractFileStorage(ABC, Generic[T]):

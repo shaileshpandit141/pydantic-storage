@@ -1,9 +1,7 @@
 from datetime import datetime
-from typing import Generic, NotRequired, TypeAlias, TypedDict, TypeVar
+from typing import Generic, NotRequired, TypeAlias, TypedDict
 
-from pydantic import BaseModel
-
-T = TypeVar("T", bound=BaseModel)
+from ._generic_types import T
 
 
 class TimestampDict(TypedDict):

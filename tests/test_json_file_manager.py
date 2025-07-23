@@ -2,7 +2,7 @@ from pytest import fixture
 from pydantic import BaseModel
 
 from json_file_storage._services import JsonFileManager
-from json_file_storage.models.pydantic import FileData
+from json_file_storage.models import FileData
 
 # ====================
 # JSONFILEMANAGER TEST
