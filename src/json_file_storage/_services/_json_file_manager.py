@@ -2,10 +2,8 @@ from datetime import datetime
 from pathlib import Path
 
 from pydantic import TypeAdapter
-from pydantic import ValidationError as PydanticValidationError
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.exceptions import ValidationError
 from json_file_storage.models.pydantic import FileData, Timestamp, now_utc
 from json_file_storage.models.typed import (
     BaseMetaDataDict,
@@ -105,12 +103,9 @@ class JsonFileManager(AbstractFileManager[T]):
             FileDict[T]: The data read from the JSON file.
 
         """
-        try:
-            file_data_text: str = self.file_path.read_text(encoding="utf-8")
-            adapter: TypeAdapter[FileData[T]] = TypeAdapter(FileData[self.model_class])
-            return adapter.validate_json(file_data_text)
-        except PydanticValidationError as error:
-            raise ValidationError(error) from error
+        file_data_text: str = self.file_path.read_text(encoding="utf-8")
+        adapter: TypeAdapter[FileData[T]] = TypeAdapter(FileData[self.model_class])
+        return adapter.validate_json(file_data_text)
 
     def write(self, data: RecordsDict[T]) -> None:
         """
