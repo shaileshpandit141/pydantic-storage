@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
-from json_file_storage.models.pydantic import FileData
+from json_file_storage.models.pydantic import FileData, Timestamp
 from json_file_storage.models.typed import BaseMetaDataDict, RecordsDict, T
 
 
@@ -48,6 +48,11 @@ class AbstractFileManager(ABC, Generic[T]):
     @abstractmethod
     def write(self, data: RecordsDict[T]) -> None:
         """Write data to a JSON file."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def update_timestamps(self, timestamps: Timestamp | None) -> Timestamp:
+        """Return updated timestamp"""
         raise NotImplementedError
 
     @abstractmethod
