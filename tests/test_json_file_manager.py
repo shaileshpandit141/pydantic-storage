@@ -1,4 +1,4 @@
-import pytest as pyt
+from pytest import fixture
 from pydantic import BaseModel
 
 from src.json_file_storage._services._json_file_manager import JsonFileManager
@@ -16,7 +16,7 @@ class User(BaseModel):
     name: str
 
 
-@pyt.fixture
+@fixture
 def manager() -> JsonFileManager[User]:
     return JsonFileManager[User](
         file_path="./users.json",
