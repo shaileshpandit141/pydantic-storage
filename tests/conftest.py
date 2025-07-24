@@ -31,7 +31,7 @@ def manager() -> JsonFileManager[User]:
 def storage() -> JsonFileStorage[FakeUser]:
     return JsonFileStorage[FakeUser](
         file_path="./users.json",
-        model_class=User,
+        model_class=FakeUser,
         metadata={
             "version": "1.0.0",
             "title": "User records",
