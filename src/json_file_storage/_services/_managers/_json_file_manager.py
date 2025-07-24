@@ -5,12 +5,7 @@ from pydantic import TypeAdapter
 
 from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
 from json_file_storage.models import FileData, Timestamp, now_utc
-from json_file_storage.types import (
-    BaseMetaDataDict,
-    FileDataDict,
-    RecordsDict,
-    T,
-)
+from json_file_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
 
 
 class JsonFileManager(AbstractFileManager[T]):
