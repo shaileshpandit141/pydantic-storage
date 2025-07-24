@@ -14,7 +14,6 @@ from src.json_file_storage.models import (
 
 from .test_helpers import FakeUser
 
-
 # ===============
 # Timestamp Tests
 # ===============
