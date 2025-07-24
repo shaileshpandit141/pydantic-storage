@@ -1,32 +1,10 @@
-from pytest import fixture
-from pydantic import BaseModel
-
 from json_file_storage._services import JsonFileManager
 from json_file_storage.models import FileData
+from .conftest import User
 
 # ====================
 # JSONFILEMANAGER TEST
 # ====================
-
-
-# DUMMY PYDANTIC MODELS
-# ---------------------
-class User(BaseModel):
-    id: int
-    name: str
-
-
-@fixture
-def manager() -> JsonFileManager[User]:
-    return JsonFileManager[User](
-        file_path="./users.json",
-        model_class=User,
-        metadata={
-            "version": "1.0.0",
-            "title": "User records",
-            "description": "User record descriptions",
-        },
-    )
 
 
 def test_json_file_manager_instance_created(
