@@ -15,3 +15,8 @@ class JsonFileStorage(AbstractFileStorage[T]):
         """Initialize the JsonFileStorage."""
         super().__init__(file_path, model_class, metadata, unique_fields)
         self.manager = JsonFileManager(file_path, model_class, metadata)
+
+    def all(self) -> list[T]:
+        """Retrieve all items from the storage."""
+        records = self.manager.read().records
+        return list(records.values())
