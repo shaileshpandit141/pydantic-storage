@@ -80,3 +80,14 @@ Issues = "https://github.com/shaileshpandit141/json-file-storage/issues"
 # -----------------------------------------
 [tool.ruff.lint.per-file-ignores]
 "tests/*.py" = ["S101"]
+
+# ====================
+# Pytest configuration
+# ====================
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
