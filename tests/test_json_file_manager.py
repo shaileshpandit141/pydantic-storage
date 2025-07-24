@@ -1,25 +1,25 @@
 from json_file_storage._services import JsonFileManager
 from json_file_storage.models import FileData
 
-from .conftest import User
+from .test_helpers import FakeUser
 
 # ====================
-# JSONFILEMANAGER TEST
+# Jsonfilemanager Test
 # ====================
 
 
 def test_json_file_manager_instance_created(
-    manager: JsonFileManager[User],
+    manager: JsonFileManager[FakeUser],
 ) -> None:
     """Testing json file manager instance creation"""
     assert isinstance(manager, JsonFileManager)
 
 
 def test_read_method(
-    manager: JsonFileManager[User],
+    manager: JsonFileManager[FakeUser],
 ) -> None:
     """Testing read method"""
-    data: FileData[User] = manager.read()
+    data: FileData[FakeUser] = manager.read()
 
     # Check present records
     assert isinstance(data.metadata.version, str)
@@ -29,20 +29,20 @@ def test_read_method(
 
 
 def test_write_and_read_users(
-    manager: JsonFileManager[User],
+    manager: JsonFileManager[FakeUser],
 ) -> None:
     """Testing write method"""
-    users: dict[int, User] = {
-        1: User(id=1, name="Alice"),
-        2: User(id=2, name="Bob"),
-        3: User(id=3, name="Charlie"),
+    users: dict[int, FakeUser] = {
+        1: FakeUser(id=1, name="Alice", email="alice@gmail.com"),
+        2: FakeUser(id=2, name="Bob", email="bob@gmail.com"),
+        3: FakeUser(id=3, name="Charlie", email="charlie@gmail.com"),
     }
 
     # Write all records to json file
     manager.write(users)
 
     # Read all record from json file
-    data: FileData[User] = manager.read()
+    data: FileData[FakeUser] = manager.read()
 
     # Check all records are present
     assert len(data.records) == 3

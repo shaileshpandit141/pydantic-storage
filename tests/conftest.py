@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from pytest import fixture
 
 from json_file_storage._services import JsonFileManager, JsonFileStorage
@@ -6,20 +5,13 @@ from json_file_storage._services import JsonFileManager, JsonFileStorage
 from .test_helpers import FakeUser
 
 
-# Dummy User model for testing
-# ----------------------------
-class User(BaseModel):
-    id: int
-    name: str
-
-
 # Fixture to create a JsonFileManager instance
 # --------------------------------------------
 @fixture(scope="module")
-def manager() -> JsonFileManager[User]:
-    return JsonFileManager[User](
+def manager() -> JsonFileManager[FakeUser]:
+    return JsonFileManager[FakeUser](
         file_path="./users.json",
-        model_class=User,
+        model_class=FakeUser,
         metadata={
             "version": "1.0.0",
             "title": "User records",

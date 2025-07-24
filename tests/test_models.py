@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timezone
 
 import pytest
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from src.json_file_storage.models import (
     BaseMetaData,
@@ -12,15 +12,11 @@ from src.json_file_storage.models import (
     Timestamp,
 )
 
-
-# Dummy record model for generic T
-class DummyRecord(BaseModel):
-    id: int
-    name: str
+from .test_helpers import FakeUser
 
 
 # ===============
-# TIMESTAMP TESTS
+# Timestamp Tests
 # ===============
 
 
@@ -41,7 +37,7 @@ def test_timestamp_custom_created_at() -> None:
 
 
 # =============
-# STORAGE TESTS
+# Storage Tests
 # =============
 
 
@@ -57,13 +53,15 @@ def test_invalid_storage_missing_field() -> None:
 
 
 # ==============
-# METADATA TESTS
+# Metadata Tests
 # ==============
 
 
 def test_valid_metadata_version_pattern() -> None:
     meta = BaseMetaData(
-        version="1.0.0", title="Test File", description="Testing metadata"
+        version="1.0.0",
+        title="Test File",
+        description="Testing metadata",
     )
     assert meta.version == "1.0.0"
     assert re.match(r"^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?(\+[a-zA-Z0-9.]+)?$", meta.version)
@@ -71,11 +69,15 @@ def test_valid_metadata_version_pattern() -> None:
 
 def test_invalid_metadata_version_pattern() -> None:
     with pytest.raises(ValidationError):
-        BaseMetaData(version="v1", title="Invalid", description="Bad version pattern")
+        BaseMetaData(
+            version="v1",
+            title="Invalid",
+            description="Bad version pattern",
+        )
 
 
 # ===================
-# FILE METADATA TESTS
+# File Metadata Tests
 # ===================
 
 
@@ -104,7 +106,7 @@ def test_file_metadata_without_timestamps() -> None:
 
 
 # ===============
-# FILE DATA TESTS
+# File Data Tests
 # ===============
 
 
@@ -116,8 +118,8 @@ def test_file_data_with_records() -> None:
         description="File with data",
         storage=storage,
     )
-    record = DummyRecord(id=1, name="Alice")
-    file_data: FileData[DummyRecord] = FileData[DummyRecord](
+    record = FakeUser(id=1, name="Alice", email="alice@gmail.com")
+    file_data: FileData[FakeUser] = FileData[FakeUser](
         metadata=metadata, records={1: record}
     )
 
@@ -133,12 +135,12 @@ def test_file_data_forbid_extra_fields() -> None:
         description="Extra field test",
         storage=storage,
     )
-    record = DummyRecord(id=2, name="Bob")
-    data: dict[str, FileMetaData | dict[int, DummyRecord] | str] = {
+    record = FakeUser(id=2, name="Bob", email="bob@gmail.com")
+    data: dict[str, FileMetaData | dict[int, FakeUser] | str] = {
         "metadata": metadata,
         "records": {2: record},
         "extra": "not allowed",
     }
 
     with pytest.raises(ValidationError):
-        FileData[DummyRecord](**data)  # type: ignore[arg-type]
+        FileData[FakeUser](**data)  # type: ignore[arg-type]
