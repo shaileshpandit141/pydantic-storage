@@ -1,11 +1,25 @@
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Any, Callable, Generic
 
-from json_file_storage.types import T
+from json_file_storage.types import T, BaseMetaDataDict
 
 
 class AbstractFileStorage(ABC, Generic[T]):
     """Abstract base class for file storage."""
+
+    def __init__(
+        self,
+        file_path: str,
+        model_class: type[T],
+        metadata: BaseMetaDataDict,
+        unique_fields: list[str] | None = None,
+    ) -> None:
+        """Initialize the AbstractFileStorage."""
+        self.file_path: Path = Path(file_path)
+        self.model_class: type[T] = model_class
+        self.metadata: BaseMetaDataDict = metadata
+        self.unique_fields: list[str] = unique_fields or []
 
     @abstractmethod
     def all(self) -> list[T]:
