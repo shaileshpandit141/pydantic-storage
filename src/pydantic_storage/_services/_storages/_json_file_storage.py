@@ -1,10 +1,10 @@
-from pydantic_storage._abstractions import AbstractFileStorage
+from pydantic_storage._abstractions import AbstractBaseFileStorage
 from pydantic_storage._services import JsonFileManager
 from pydantic_storage.types._generic_types import T
 from pydantic_storage.types._model_dict_types import BaseMetaDataDict
 
 
-class JsonFileStorage(AbstractFileStorage[T]):
+class JsonFileStorage(AbstractBaseFileStorage[T]):
     def __init__(
         self,
         file_path: str,

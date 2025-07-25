@@ -1,7 +1,5 @@
-from ._abstract_file_manager import AbstractFileManager
-from ._abstract_file_storage import AbstractFileStorage
+from ._managers._base_file_manager import AbstractBaseFileManager
+from ._storages._base_file_storage import AbstractBaseFileStorage
 
-__all__: list[str] = [
-    "AbstractFileManager",
-    "AbstractFileStorage",
-]
+
+__all__ = ["AbstractBaseFileManager", "AbstractBaseFileStorage"]

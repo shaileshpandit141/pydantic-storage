@@ -6,7 +6,7 @@ from pydantic_storage.models import FileData, Timestamp
 from pydantic_storage.types import BaseMetaDataDict, RecordsDict, T
 
 
-class AbstractFileManager(ABC, Generic[T]):
+class AbstractBaseFileManager(ABC, Generic[T]):
     """Abstract base class for managing file operations."""
 
     def __init__(
