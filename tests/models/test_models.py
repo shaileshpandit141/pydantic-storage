@@ -12,7 +12,7 @@ from pydantic_storage.models import (
     Timestamp,
 )
 
-from .test_helpers import FakeUser
+from tests.test_helpers import FakeUser
 
 # ===============
 # Timestamp Tests
