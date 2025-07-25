@@ -6,7 +6,7 @@ from ._model_dict_types import (
     RecordsDict,
 )
 
-__all__: list[str] = [
+__all__ = [
     "FileDataDict",
     "BaseMetaDataDict",
     "FileMetaDataDict",

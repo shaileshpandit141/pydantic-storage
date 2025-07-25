@@ -1,3 +1,4 @@
-from ._services import JsonFileManager, JsonFileStorage
+from ._services import BaseFileManager, BaseFileStorage
 
-__all__: list[str] = ["JsonFileManager", "JsonFileStorage"]
+
+__all__ = ["BaseFileManager", "BaseFileStorage"]

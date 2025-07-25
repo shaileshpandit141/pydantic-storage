@@ -8,7 +8,7 @@ from ._models import (
     now_utc,
 )
 
-__all__: list[str] = [
+__all__ = [
     "BaseMetaData",
     "FileData",
     "FileMetaData",

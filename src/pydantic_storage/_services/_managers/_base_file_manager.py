@@ -8,8 +8,8 @@ from pydantic_storage.models import FileData, Timestamp, now_utc
 from pydantic_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
 
 
-class JsonFileManager(AbstractBaseFileManager[T]):
-    """A class for managing JSON file operations."""
+class BaseFileManager(AbstractBaseFileManager[T]):
+    """A class for managing file operations."""
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-from ._managers._json_file_manager import JsonFileManager
-from ._storages._json_file_storage import JsonFileStorage
+from ._managers._base_file_manager import BaseFileManager
+from ._storages._base_file_storage import BaseFileStorage
 
-__all__: list[str] = ["JsonFileManager", "JsonFileStorage"]
+__all__ = ["BaseFileManager", "BaseFileStorage"]

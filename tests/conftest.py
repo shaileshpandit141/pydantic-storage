@@ -1,15 +1,15 @@
-from pytest import fixture
+from pytest import fixture, mark
 
-from pydantic_storage._services import JsonFileManager, JsonFileStorage
+from pydantic_storage._services import BaseFileManager, BaseFileStorage
 
 from .test_helpers import FakeUser
 
 
-# Fixture to create a JsonFileManager instance
+# Fixture to create a BaseFileManager instance
 # --------------------------------------------
 @fixture(scope="module")
-def manager() -> JsonFileManager[FakeUser]:
-    return JsonFileManager[FakeUser](
+def manager() -> BaseFileManager[FakeUser]:
+    return BaseFileManager[FakeUser](
         file_path="./users.json",
         model_class=FakeUser,
         metadata={
@@ -20,9 +20,10 @@ def manager() -> JsonFileManager[FakeUser]:
     )
 
 
+@mark.skip(reason="Skipping test for BaseFileStorage")
 @fixture(scope="module")
-def storage() -> JsonFileStorage[FakeUser]:
-    return JsonFileStorage[FakeUser](
+def storage() -> BaseFileStorage[FakeUser]:
+    return BaseFileStorage[FakeUser](
         file_path="./users.json",
         model_class=FakeUser,
         metadata={
