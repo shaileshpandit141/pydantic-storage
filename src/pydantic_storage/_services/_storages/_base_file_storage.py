@@ -1,4 +1,4 @@
-from pydantic_storage._abstractions import AbstractBaseFileStorage
+from pydantic_storage.abstractions import AbstractBaseFileStorage
 from pydantic_storage._services import BaseFileManager
 from pydantic_storage.types._generic_types import T
 from pydantic_storage.types._model_dict_types import BaseMetaDataDict

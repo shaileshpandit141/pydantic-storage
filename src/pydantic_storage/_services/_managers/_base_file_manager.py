@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from pydantic_storage._abstractions import AbstractBaseFileManager
+from pydantic_storage.abstractions import AbstractBaseFileManager
 from pydantic_storage.models import FileData, Timestamp, now_utc
 from pydantic_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
 
