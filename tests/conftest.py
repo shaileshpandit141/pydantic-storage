@@ -1,15 +1,15 @@
 from pytest import fixture, skip
 
-from pydantic_storage._services import BaseFileManager, BaseFileStorage
+from pydantic_storage._services import FileManager, FileStorage
 
 from .test_helpers import FakeUser
 
 
-# Fixture to create a BaseFileManager instance
+# Fixture to create a FileManager instance
 # --------------------------------------------
 @fixture(scope="module")
-def manager() -> BaseFileManager[FakeUser]:
-    return BaseFileManager[FakeUser](
+def manager() -> FileManager[FakeUser]:
+    return FileManager[FakeUser](
         file_path="./users.json",
         model_class=FakeUser,
         metadata={
@@ -21,9 +21,9 @@ def manager() -> BaseFileManager[FakeUser]:
 
 
 @fixture(scope="module")
-def storage() -> BaseFileStorage[FakeUser]:
-    skip(reason="Skipping test for BaseFileStorage")
-    return BaseFileStorage[FakeUser](
+def storage() -> FileStorage[FakeUser]:
+    skip(reason="Skipping test for FileStorage")
+    return FileStorage[FakeUser](
         file_path="./users.json",
         model_class=FakeUser,
         metadata={

@@ -1,4 +1,4 @@
-from ._managers._base_file_manager import BaseFileManager
-from ._storages._base_file_storage import BaseFileStorage
+from ._managers._file_manager import FileManager
+from ._storages._file_storage import FileStorage
 
-__all__ = ["BaseFileManager", "BaseFileStorage"]
+__all__ = ["FileManager", "FileStorage"]

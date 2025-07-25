@@ -1,22 +1,22 @@
-from pydantic_storage._services import BaseFileManager
+from pydantic_storage._services import FileManager
 from pydantic_storage.models import FileData
 
 from .test_helpers import FakeUser
 
-# ====================
-# Basefilemanager Test
-# ====================
+# ================
+# Filemanager Test
+# ================
 
 
 def test_json_file_manager_instance_created(
-    manager: BaseFileManager[FakeUser],
+    manager: FileManager[FakeUser],
 ) -> None:
     """Testing json file manager instance creation"""
-    assert isinstance(manager, BaseFileManager)
+    assert isinstance(manager, FileManager)
 
 
 def test_read_method(
-    manager: BaseFileManager[FakeUser],
+    manager: FileManager[FakeUser],
 ) -> None:
     """Testing read method"""
     data: FileData[FakeUser] = manager.read()
@@ -29,7 +29,7 @@ def test_read_method(
 
 
 def test_write_and_read_users(
-    manager: BaseFileManager[FakeUser],
+    manager: FileManager[FakeUser],
 ) -> None:
     """Testing write method"""
     users: dict[int, FakeUser] = {

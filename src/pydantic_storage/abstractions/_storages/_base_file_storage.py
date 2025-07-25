@@ -5,7 +5,7 @@ from typing import Any, Callable, Generic
 from pydantic_storage.types import BaseMetaDataDict, T
 
 
-class AbstractBaseFileStorage(ABC, Generic[T]):
+class BaseFileStorage(ABC, Generic[T]):
     """Abstract base class for file storage."""
 
     def __init__(

@@ -3,12 +3,12 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from pydantic_storage.abstractions import AbstractBaseFileManager
+from pydantic_storage.abstractions import BaseFileManager
 from pydantic_storage.models import FileData, Timestamp, now_utc
 from pydantic_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
 
 
-class BaseFileManager(AbstractBaseFileManager[T]):
+class FileManager(BaseFileManager[T]):
     """A class for managing file operations."""
 
     def __init__(
