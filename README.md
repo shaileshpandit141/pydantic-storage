@@ -19,7 +19,7 @@ Install the package using your preferred Python package manager:
 ### Using `uv`
 
 ```bash
-uv pip install pydantic-storage
+uv add pydantic-storage
 ```
 
 ### Using `pip`
