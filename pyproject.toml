@@ -3,12 +3,15 @@
 # ==========================
 
 [project]
-name = "json-file-storage"
+name = "pydantic-storage"
 version = "0.1.0"
 description = """
-A simple JSON-based storage backend for Pydantic models with metadata and record management.
+A lightweight, extensible, and fully type-safe data storage system built with
+Pydantic and modern Python. Initially file-based (JSON), it's designed to
+support multiple backends like CSV, SQL, and more. It enables persistent
+storage of Pydantic models, auto-generated IDs, metadata, uniqueness
+constraints, partial updates, and structured storage with a real-world schema.
 """
-readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
     { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" },
@@ -26,12 +29,15 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.13"
-dependencies = ["pydantic>=2.11.7"]
+dependencies = [
+    "iniconfig>=2.1.0",
+    "pydantic>=2.11.7",
+]
 
 # CLI scripts entry point configuration
 # -------------------------------------
 [project.scripts]
-json-file-storage = "json_file_storage:entry_point" # CLI entry point
+pydantic-storage = "pydantic_storage:entry_point" # CLI entry point
 
 # ==========================
 # Build system configuration
@@ -44,13 +50,13 @@ build-backend = "hatchling.build" # Build backend
 # Dependency groups
 # =================
 [dependency-groups]
-dev = ["json-file-storage", "pytest>=8.4.1"] # Development dependency group
+dev = ["pydantic-storage", "pytest>=8.4.1"] # Development dependency group
 
 # ===============
 # UV tool sources
 # ===============
 [tool.uv.sources]
-json-file-storage = { workspace = true }
+pydantic-storage = { workspace = true }
 
 # =====================
 # Optional dependencies
@@ -62,15 +68,15 @@ dev = ["pytest", "mypy", "ruff"] # Optional dev dependencies
 # Package data
 # ============
 [tool.setuptools.package-data]
-"json_file_storage" = ["py.typed"] # Include type information
+"pydantic_storage" = ["py.typed"] # Include type information
 
 # ============
 # Project URLs
 # ============
 [project.urls]
-Homepage = "https://github.com/shaileshpandit141/json-file-storage"
-Repository = "https://github.com/shaileshpandit141/json-file-storage"
-Issues = "https://github.com/shaileshpandit141/json-file-storage/issues"
+Homepage = "https://github.com/shaileshpandit141/pydantic-storage"
+Repository = "https://github.com/shaileshpandit141/pydantic-storage"
+Issues = "https://github.com/shaileshpandit141/pydantic-storage/issues"
 
 # ===================
 # Tool Configurations

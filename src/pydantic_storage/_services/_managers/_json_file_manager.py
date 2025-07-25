@@ -3,9 +3,9 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from json_file_storage._abstractions._abstract_file_manager import AbstractFileManager
-from json_file_storage.models import FileData, Timestamp, now_utc
-from json_file_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
+from pydantic_storage._abstractions._abstract_file_manager import AbstractFileManager
+from pydantic_storage.models import FileData, Timestamp, now_utc
+from pydantic_storage.types import BaseMetaDataDict, FileDataDict, RecordsDict, T
 
 
 class JsonFileManager(AbstractFileManager[T]):

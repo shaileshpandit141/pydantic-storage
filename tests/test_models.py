@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import pytest
 from pydantic import ValidationError
 
-from src.json_file_storage.models import (
+from pydantic_storage.models import (
     BaseMetaData,
     FileData,
     FileMetaData,

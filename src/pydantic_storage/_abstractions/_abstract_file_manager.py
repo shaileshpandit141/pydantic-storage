@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
-from json_file_storage.models import FileData, Timestamp
-from json_file_storage.types import BaseMetaDataDict, RecordsDict, T
+from pydantic_storage.models import FileData, Timestamp
+from pydantic_storage.types import BaseMetaDataDict, RecordsDict, T
 
 
 class AbstractFileManager(ABC, Generic[T]):

@@ -1,5 +1,5 @@
-from json_file_storage._services import JsonFileManager
-from json_file_storage.models import FileData
+from pydantic_storage._services import JsonFileManager
+from pydantic_storage.models import FileData
 
 from .test_helpers import FakeUser
 

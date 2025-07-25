@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Callable, Generic
 
-from json_file_storage.types import BaseMetaDataDict, T
+from pydantic_storage.types import BaseMetaDataDict, T
 
 
 class AbstractFileStorage(ABC, Generic[T]):

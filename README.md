@@ -1,16 +1,16 @@
-# 🗃️ JsonFileStorage
+# 🗃️ PydanticStorage
 
-A lightweight, extensible, and fully type-safe JSON-based data storage system built with **Pydantic** and modern Python. It supports file-backed persistence of Pydantic models, auto-generated IDs, metadata, uniqueness constraints, partial updates, and structured JSON with a real-world schema.
+A lightweight, extensible, and fully type-safe data storage system built with **Pydantic** and modern Python. Initially file-based (JSON), it's designed to support multiple backends like CSV, SQL, and more. It enables persistent storage of Pydantic models, auto-generated IDs, metadata, uniqueness constraints, partial updates, and structured storage with a real-world schema.
 
 ## 🚀 Features
 
-- ✅ JSON-based file storage for Pydantic models
-- 🔐 Unique field constraint (e.g., prevent duplicate emails)
-- 🆔 Auto ID assignment starting from `1`
-- 🧩 Partial & full record updates
-- 🗂️ Structured schema with `metadata` + `records`
-- 🧹 Methods like `filter`, `exists`, `count`, `clear`, `create`, `bulk_create`, etc.
-- 📦 And metadata support
+* ✅ JSON-based file storage for Pydantic models
+* 🔐 Unique field constraint (e.g., prevent duplicate emails)
+* 🆔 Auto ID assignment starting from `1`
+* 🧩 Partial & full record updates
+* 🗂️ Structured schema with `metadata` + `records`
+* 🧹 Methods like `filter`, `exists`, `count`, `clear`, `create`, `bulk_create`, etc.
+* 📦 Metadata support
 
 ## 📦 Installation
 
@@ -19,13 +19,13 @@ Install the package using your preferred Python package manager:
 ### Using `uv`
 
 ```bash
-uv pip install json-file-storage
+uv pip install pydantic-storage
 ```
 
 ### Using `pip`
 
 ```bash
-pip install json-file-storage
+pip install pydantic-storage
 ```
 
 ## 🧠 Usage
@@ -35,31 +35,27 @@ pip install json-file-storage
 ```python
 from pydantic import BaseModel
 
-
 class User(BaseModel):
     id: int | None = None
     name: str
     email: str
-
 ```
 
 ### 2. Initialize Storage
 
 ```python
-from json_file_storage import JsonFileStorage
-
+from pydantic_storage import JsonFileStorage
 
 store = JsonFileStorage(
     model=User,
     file_name="users.json",
     unique_by=["email"],  # Optional: default is ['id']
     metadata={  # Optional
-        "version": "1.0.0"
+        "version": "1.0.0",
         "title": "User Store",
         "description": "Stores user info",
     }
 )
-
 ```
 
 ### 3. Create Records
@@ -118,7 +114,7 @@ store.bulk_create([
     },
     "timestamps": {
         "created_at": "2025-07-01T15:30:00Z",
-        "updated_at": "2025-07-01T15:45:23Z",
+        "updated_at": "2025-07-01T15:45:23Z"
     }
   },
   "records": {
@@ -138,37 +134,35 @@ store.bulk_create([
 
 ## ❗ Exceptions
 
-- `DuplicateEntryError`: Raised when uniqueness is violated on `create`.
-- `ValidationError`: Raised if an any action violates the model schema.
+* `DuplicateEntryError`: Raised when uniqueness is violated on `create`.
+* `ValidationError`: Raised if an action violates the model schema.
 
 ## 🧪 Testing
 
-To run the tests, by executing this command:
+Run tests with:
 
 ```bash
 pytest tests
 ```
 
-Tests cover core functionality, including record creation, uniqueness constraints, updates, deletions, and metadata handling.
+Covers record creation, uniqueness, updates, deletions, and metadata.
 
 ## 🛠️ Planned Features
 
-- 🔒 Optional encryption of file data
-- 📦 Export/import to CSV or SQL
-- 🕒 Automatic backup snapshots
-- 🧪 Pytest-based test suite
-- 📊 Metadata versioning & schema evolution
+* 🔒 Optional encryption
+* 📦 Export/import to CSV, SQLite
+* 🕒 Automatic backups
+* 🧪 Pytest-based suite
+* 📊 Schema evolution support
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any changes or improvements.
+Contributions are welcome! Please open an issue or PR for any improvements.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+MIT License. See the LICENSE file for details.
 
 ## 👤 Author
 
 For questions or assistance, contact **Shailesh** at [shaileshpandit141@gmail.com](mailto:shaileshpandit141@gmail.com).
-
-Thank you!

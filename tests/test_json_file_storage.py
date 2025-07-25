@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from json_file_storage import JsonFileStorage
+from pydantic_storage import JsonFileStorage
 
 from .test_helpers import FakeUser
 

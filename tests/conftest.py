@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from json_file_storage._services import JsonFileManager, JsonFileStorage
+from pydantic_storage._services import JsonFileManager, JsonFileStorage
 
 from .test_helpers import FakeUser
 
