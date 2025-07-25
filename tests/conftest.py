@@ -1,4 +1,4 @@
-from pytest import fixture, mark
+from pytest import fixture, skip
 
 from pydantic_storage._services import BaseFileManager, BaseFileStorage
 
@@ -20,9 +20,9 @@ def manager() -> BaseFileManager[FakeUser]:
     )
 
 
-@mark.skip(reason="Skipping test for BaseFileStorage")
 @fixture(scope="module")
 def storage() -> BaseFileStorage[FakeUser]:
+    skip(reason="Skipping test for BaseFileStorage")
     return BaseFileStorage[FakeUser](
         file_path="./users.json",
         model_class=FakeUser,
