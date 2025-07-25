@@ -11,8 +11,7 @@ from pydantic_storage.models import (
     Storage,
     Timestamp,
 )
-
-from tests.test_helpers import FakeUser
+from tests.mocks.models import FakeUser
 
 # ===============
 # Timestamp Tests

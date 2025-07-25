@@ -1,9 +1,7 @@
 from pathlib import Path
 
-
 from pydantic_storage._services import FileStorage
-
-from tests.test_helpers import FakeUser
+from tests.mocks.models import FakeUser
 
 
 def test_json_file_storage_initialization(storage: FileStorage[FakeUser]) -> None:

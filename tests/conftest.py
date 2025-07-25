@@ -2,7 +2,7 @@ from pytest import fixture, skip
 
 from pydantic_storage._services import FileManager, FileStorage
 
-from .test_helpers import FakeUser
+from tests.mocks.models import FakeUser
 
 
 # Fixture to create a FileManager instance

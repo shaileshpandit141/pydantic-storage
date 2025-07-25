@@ -1,7 +1,6 @@
 from pydantic_storage._services import FileManager
 from pydantic_storage.models import FileData
-
-from tests.test_helpers import FakeUser
+from tests.mocks.models import FakeUser
 
 # ================
 # Filemanager Test
