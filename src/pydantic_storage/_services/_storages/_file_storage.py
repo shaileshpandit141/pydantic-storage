@@ -1,11 +1,12 @@
 from typing import Any
 
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
+from pydantic.fields import FieldInfo
+
 from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseFileStorage
 from pydantic_storage.types._generic_types import T
 from pydantic_storage.types._model_dict_types import BaseMetaDataDict
-from pydantic.fields import FieldInfo
 
 
 class FileStorage(BaseFileStorage[T]):
@@ -29,7 +30,9 @@ class FileStorage(BaseFileStorage[T]):
         field_list: dict[str, FieldInfo] = self.model_class.model_fields
         for key, value in kwargs.items():
             if key not in field_list:
-                raise ValueError(f"Field '{key}' is not a valid field of the model.")
+                raise ValidationError(
+                    f"Field '{key}' is not a valid field of the model."
+                )
 
             field_info = field_list[key]
             annotation = field_info.annotation
@@ -38,7 +41,7 @@ class FileStorage(BaseFileStorage[T]):
             try:
                 TypeAdapter(annotation).validate_python(value)
             except Exception as _:
-                raise TypeError(
+                raise ValidationError(
                     f"Value for field '{key}' must be of type {annotation}, got {value!r}"
                 )
 
