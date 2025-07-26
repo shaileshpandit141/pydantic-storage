@@ -24,7 +24,6 @@ classifiers = [
   "Typing :: Typed",
   "Framework :: Pydantic",
   "Topic :: Database",
-  "Topic :: Software Development :: Persistence",
   "Topic :: Utilities",
   "Natural Language :: English",
   "Topic :: Software Development :: Version Control",
