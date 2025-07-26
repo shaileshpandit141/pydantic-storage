@@ -55,3 +55,10 @@ def test_first_record(storage: FileStorage[FakeUser]) -> None:
     first_item = storage.first()
     assert isinstance(first_item, FakeUser)
     assert first_item.id == 1
+
+
+def test_last_record(storage: FileStorage[FakeUser]) -> None:
+    """Test the last records of FileStorage."""
+    last_item = storage.last()
+    assert isinstance(last_item, FakeUser)
+    assert last_item.id == len(storage.all())
