@@ -57,18 +57,8 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, item: T) -> None:
+    def create(self, items: list[T]) -> list[T]:
         """Create a new item in the storage."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def bulk_create(
-        self,
-        items: list[T],
-        *,
-        skip_duplicates: bool = True,
-    ) -> list[T]:
-        """Create multiple items in the storage."""
         raise NotImplementedError
 
     @abstractmethod
@@ -82,23 +72,8 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def update_partial(
-        self,
-        key: str,
-        value: object,
-        update_fields: dict[str, Any],
-    ) -> bool:
-        """Partially update an item by key and value."""
-        raise NotImplementedError
-
-    @abstractmethod
     def filter(self, predicate: Callable[[T], bool]) -> list[T]:
         """Filter items based on a predicate function."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def refresh(self) -> list[T]:
-        """Refresh the storage and return all items."""
         raise NotImplementedError
 
     @abstractmethod
