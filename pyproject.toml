@@ -21,7 +21,16 @@ classifiers = [
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries",
   "Topic :: Software Development :: Libraries :: Python Modules",
-    "Typing :: Typed",
+  "Typing :: Typed",
+  "Framework :: Pydantic",
+  "Topic :: Database",
+  "Topic :: Software Development :: Persistence",
+  "Topic :: Utilities",
+  "Natural Language :: English",
+  "Topic :: Software Development :: Version Control",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Security :: Cryptography",
+  "Topic :: File Formats :: JSON",
 ]
 requires-python = ">=3.13"
 dependencies = [
