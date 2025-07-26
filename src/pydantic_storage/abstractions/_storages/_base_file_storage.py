@@ -27,7 +27,7 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def get(self, key: str, value: object) -> T | None:
+    def get(self, **kwargs: Any) -> T | None:
         """Retrieve an item by key and value."""
         raise NotImplementedError
 
