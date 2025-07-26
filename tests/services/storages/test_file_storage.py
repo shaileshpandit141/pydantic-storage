@@ -48,3 +48,10 @@ def test_get_method(storage: FileStorage[FakeUser]) -> None:
     # Test with invalid field
     with raises(ValidationError):
         storage.get(age=25)
+
+
+def test_first_method(storage: FileStorage[FakeUser]) -> None:
+    """Test the first method of FileStorage."""
+    first_item = storage.first()
+    assert isinstance(first_item, FakeUser)
+    assert first_item.id == 1
