@@ -14,14 +14,14 @@ def test_json_file_storage_initialization(storage: FileStorage[FakeUser]) -> Non
     assert isinstance(storage.unique_fields, list)
 
 
-def test_all_method(storage: FileStorage[FakeUser]) -> None:
+def test_all_records(storage: FileStorage[FakeUser]) -> None:
     """Test the all method of FileStorage."""
     items = storage.all()
     assert isinstance(items, list)
     assert all(isinstance(item, FakeUser) for item in items)
 
 
-def test_get_method(storage: FileStorage[FakeUser]) -> None:
+def test_get_record(storage: FileStorage[FakeUser]) -> None:
     """Test the get method of FileStorage."""
     user = storage.get(name="John Doe")
     assert isinstance(user, FakeUser)
@@ -50,7 +50,7 @@ def test_get_method(storage: FileStorage[FakeUser]) -> None:
         storage.get(age=25)
 
 
-def test_first_method(storage: FileStorage[FakeUser]) -> None:
+def test_first_record(storage: FileStorage[FakeUser]) -> None:
     """Test the first method of FileStorage."""
     first_item = storage.first()
     assert isinstance(first_item, FakeUser)
