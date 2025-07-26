@@ -92,10 +92,19 @@ def test_exist_record(storage: FileStorage[FakeUser]) -> None:
 @mark.skip(reason="Break pravious test")
 def test_create_record(storage: FileStorage[FakeUser]) -> None:
     """Create a new item in the storage."""
-    storage.create(
-        FakeUser(
-            id=storage.next_id(),
-            name="yash",
-            email="yash@gmail.com",
-        )
+    records: list[FakeUser] = storage.create(
+        [
+            FakeUser(
+                id=storage.next_id(),
+                name="yash",
+                email="yash@gmail.com",
+            ),
+            FakeUser(
+                id=storage.next_id(),
+                name="hsialesh",
+                email="hsialesh@gmail.com",
+            ),
+        ]
     )
+
+    assert len(records) == 2
