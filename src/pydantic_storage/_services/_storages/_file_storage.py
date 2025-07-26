@@ -84,12 +84,17 @@ class FileStorage(BaseFileStorage[T]):
         previous_recod = self.count()
         return previous_recod + 1
 
-    def create(self, item: T) -> None:
+    def create(self, items: list[T]) -> list[T]:
         """Create a new item in the storage."""
-        if not isinstance(item, self.model_class):
-            raise ValidationError(
-                f"Item must be an instance of {self.model_class.__name__}, got {type(item).__name__}"
-            )
-        self.manager.write(
-            {self.next_id(): item},
-        )
+        created_records: list[T] = []
+        for item in items:
+            if not isinstance(item, self.model_class):
+                raise ValidationError(
+                    f"Item must be an instance of {self.model_class.__name__}, got {type(item).__name__}"
+                )
+            if not self.exists(**item.model_dump()):
+                self.manager.write(
+                    {self.next_id(): item},
+                )
+                created_records.append(item)
+        return created_records
