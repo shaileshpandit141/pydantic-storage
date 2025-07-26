@@ -47,8 +47,13 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def exists(self, key: str, value: object) -> bool:
+    def exists(self, **kwargs: Any) -> bool:
         """Check if an item exists by key and value."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def next_id(self) -> int:
+        """Return next id as for previous recods"""
         raise NotImplementedError
 
     @abstractmethod
