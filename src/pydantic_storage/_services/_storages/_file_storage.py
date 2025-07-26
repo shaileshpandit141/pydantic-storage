@@ -78,3 +78,8 @@ class FileStorage(BaseFileStorage[T]):
             if all(getattr(record, k) == v for k, v in kwargs.items()):
                 return True
         return False
+
+    def next_id(self) -> int:
+        """Return next id as for previous recods"""
+        previous_recod = self.count()
+        return previous_recod + 1
