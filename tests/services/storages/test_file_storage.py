@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from pydantic_storage._services import FileStorage
 from tests.mocks.models import FakeUser
@@ -87,3 +87,15 @@ def test_exist_record(storage: FileStorage[FakeUser]) -> None:
         email="shailesh@gmail.com",
     )
     assert user_exist is False
+
+
+@mark.skip(reason="Break pravious test")
+def test_create_record(storage: FileStorage[FakeUser]) -> None:
+    """Create a new item in the storage."""
+    storage.create(
+        FakeUser(
+            id=storage.next_id(),
+            name="yash",
+            email="yash@gmail.com",
+        )
+    )
