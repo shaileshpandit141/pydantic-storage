@@ -70,3 +70,11 @@ class FileStorage(BaseFileStorage[T]):
     def count(self) -> int:
         """Count the number of items in the storage."""
         return len(self.all())
+
+    def exists(self, **kwargs: Any) -> bool:
+        """Check if an item exists by key and value."""
+        self.__validate_kwargs(kwargs)
+        for record in self.all():
+            if all(getattr(record, k) == v for k, v in kwargs.items()):
+                return True
+        return False
