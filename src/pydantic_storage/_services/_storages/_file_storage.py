@@ -59,3 +59,10 @@ class FileStorage(BaseFileStorage[T]):
         if len(records) > 0:
             return records[0]
         return None
+
+    def last(self) -> T | None:
+        """Retrieve the last item from the storage."""
+        records = self.all()
+        if len(records) > 0:
+            return records[-1]
+        return None
