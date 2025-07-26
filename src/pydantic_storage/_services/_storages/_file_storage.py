@@ -66,3 +66,7 @@ class FileStorage(BaseFileStorage[T]):
         if len(records) > 0:
             return records[-1]
         return None
+
+    def count(self) -> int:
+        """Count the number of items in the storage."""
+        return len(self.all())
