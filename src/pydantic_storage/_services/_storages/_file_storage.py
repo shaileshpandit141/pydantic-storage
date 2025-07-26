@@ -83,3 +83,13 @@ class FileStorage(BaseFileStorage[T]):
         """Return next id as for previous recods"""
         previous_recod = self.count()
         return previous_recod + 1
+
+    def create(self, item: T) -> None:
+        """Create a new item in the storage."""
+        if not isinstance(item, self.model_class):
+            raise ValidationError(
+                f"Item must be an instance of {self.model_class.__name__}, got {type(item).__name__}"
+            )
+        self.manager.write(
+            {self.next_id(): item},
+        )
