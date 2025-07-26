@@ -41,3 +41,11 @@ class FileStorage(BaseFileStorage[T]):
                 raise TypeError(
                     f"Value for field '{key}' must be of type {annotation}, got {value!r}"
                 )
+
+    def get(self, **kwargs: Any) -> T | None:
+        """Retrieve an items baased on key-value pairs."""
+        self.__validate_kwargs(kwargs)
+        for record in self.all():
+            if all(getattr(record, k) == v for k, v in kwargs.items()):
+                return record
+        return None
