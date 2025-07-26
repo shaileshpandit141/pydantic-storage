@@ -27,6 +27,10 @@ def test_get_record(storage: FileStorage[FakeUser]) -> None:
     assert isinstance(user, FakeUser)
     assert user.name == "John Doe"
 
+    # Test with non-existing key-value pair
+    user = storage.get(name="Non Existent")
+    assert user is None
+
     # Test with multiple key-value pair
     user = storage.get(
         name="Alice",
@@ -39,10 +43,6 @@ def test_get_record(storage: FileStorage[FakeUser]) -> None:
         name="Alice",
         email="shailesh@gmail.com",
     )
-    assert isinstance(user, FakeUser)
-
-    # Test with non-existing key-value pair
-    user = storage.get(name="Non Existent")
     assert user is None
 
     # Test with invalid field
@@ -67,3 +67,23 @@ def test_last_record(storage: FileStorage[FakeUser]) -> None:
 def test_count_records(storage: FileStorage[FakeUser]) -> None:
     """Test the count records of FileStorage records"""
     assert len(storage.all()) == storage.count()
+
+
+def test_exist_record(storage: FileStorage[FakeUser]) -> None:
+    """Test the exist method of FileStorage."""
+    assert storage.exists(name="John Doe")
+    assert not storage.exists(name="Non Existent")
+
+    # Test with multiple key-value pair
+    user_exist = storage.exists(
+        name="Alice",
+        email="alice@gmail.com",
+    )
+    assert user_exist is True
+
+    # Test with non-existing multiple key-value pair
+    user_exist = storage.get(
+        name="Alice",
+        email="shailesh@gmail.com",
+    )
+    assert user_exist is False
