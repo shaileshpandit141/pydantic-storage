@@ -52,3 +52,10 @@ class FileStorage(BaseFileStorage[T]):
             if all(getattr(record, k) == v for k, v in kwargs.items()):
                 return record
         return None
+
+    def first(self) -> T | None:
+        """Retrieve the first item from the storage."""
+        records = self.all()
+        if len(records) > 0:
+            return records[0]
+        return None
