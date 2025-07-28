@@ -116,3 +116,12 @@ class FileStorage(BaseFileStorage[T]):
                 self.manager.write({i + 1: record})
                 return record
         raise ValidationError(f"Item {items} not found in storage for update.")
+
+    def filter(self, **kwargs: Any) -> list[T]:
+        """Filter items based on kwargs"""
+        self.__validate_kwargs(kwargs)
+        filtered_records: list[T] = []
+        for record in self.all():
+            if all(getattr(record, k) == v for k, v in kwargs.items()):
+                filtered_records.append(record)
+        return filtered_records
