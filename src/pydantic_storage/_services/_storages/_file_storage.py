@@ -98,3 +98,21 @@ class FileStorage(BaseFileStorage[T]):
                 )
                 created_records.append(item)
         return created_records
+
+    def update(self, items: T, **kwargs: Any) -> T:
+        """Update item with provided kwargs"""
+        if not isinstance(items, self.model_class):
+            raise ValidationError(
+                f"Item must be an instance of {self.model_class.__name__}, got {type(items).__name__}"
+            )
+        self.__validate_kwargs(kwargs)
+
+        records = self.all()
+        for i, record in enumerate(records):
+            if record == items:
+                for key, value in kwargs.items():
+                    setattr(record, key, value)
+                records[i] = record
+                self.manager.write({i + 1: record})
+                return record
+        raise ValidationError(f"Item {items} not found in storage for update.")
