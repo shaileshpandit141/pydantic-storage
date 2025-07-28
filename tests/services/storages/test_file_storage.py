@@ -108,3 +108,28 @@ def test_create_record(storage: FileStorage[FakeUser]) -> None:
     )
 
     assert len(records) == 2
+
+
+def test_update_record(storage: FileStorage[FakeUser]) -> None:
+    """Update an item in the storage."""
+    user = storage.get(name="John Doe")
+    assert user is not None
+
+    updated_user = storage.update(user, email="johndoeupdated@gmail.com")
+    assert updated_user.email == "johndoeupdated@gmail.com"
+
+    # Verify the update
+    user_after_update = storage.get(name="John Doe")
+    assert user_after_update is not None
+    assert user_after_update.email == "johndoeupdated@gmail.com"
+
+    # Test with non-existing record
+    with raises(ValidationError):
+        storage.update(
+            FakeUser(
+                id=999,
+                name="Non Existent",
+                email="johndoeupdated@gmail.com",
+            ),
+            email="nonexistent@gmail.com",
+        )
