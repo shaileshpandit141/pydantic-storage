@@ -82,7 +82,7 @@ def test_exist_record(storage: FileStorage[FakeUser]) -> None:
     assert user_exist is True
 
     # Test with non-existing multiple key-value pair
-    user_exist = storage.get(
+    user_exist = storage.exists(
         name="Alice",
         email="shailesh@gmail.com",
     )
