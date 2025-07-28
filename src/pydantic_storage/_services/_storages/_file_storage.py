@@ -140,3 +140,8 @@ class FileStorage(BaseFileStorage[T]):
             else:
                 non_deleted_records[i + 1] = record
         return None
+
+    def clear(self) -> bool:
+        """Clear all items from the storage."""
+        self.manager.write({})
+        return True
