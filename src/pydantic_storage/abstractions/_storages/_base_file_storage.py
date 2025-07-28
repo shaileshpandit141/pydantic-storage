@@ -73,7 +73,7 @@ class BaseFileStorage(ABC, Generic[T]):
 
     @abstractmethod
     def delete(self, **kwargs: Any) -> T | None:
-        """Delete an item by key and value."""
+        """Delete an items based on kwargs"""
         raise NotImplementedError
 
     @abstractmethod
