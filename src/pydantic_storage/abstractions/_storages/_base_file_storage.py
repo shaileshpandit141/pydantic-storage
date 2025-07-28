@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Callable, Generic
+from typing import Any, Generic
 
 from pydantic_storage.types import BaseMetaDataDict, T
 
@@ -67,16 +67,16 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def filter(self, predicate: Callable[[T], bool]) -> list[T]:
-        """Filter items based on a predicate function."""
+    def filter(self, **kwargs: Any) -> list[T]:
+        """Filter items based on kwargs"""
         raise NotImplementedError
 
     @abstractmethod
-    def delete(self, key: str, value: object) -> bool:
+    def delete(self, **kwargs: Any) -> T | None:
         """Delete an item by key and value."""
         raise NotImplementedError
 
     @abstractmethod
-    def clear(self) -> None:
+    def clear(self) -> bool:
         """Clear all items from the storage."""
         raise NotImplementedError
