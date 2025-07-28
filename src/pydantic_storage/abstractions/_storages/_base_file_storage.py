@@ -63,7 +63,7 @@ class BaseFileStorage(ABC, Generic[T]):
 
     @abstractmethod
     def update(self, items: T, **kwargs: Any) -> bool:
-        """Update an item by key and value using a provided function."""
+        """Update item with provided kwargs"""
         raise NotImplementedError
 
     @abstractmethod
