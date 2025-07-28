@@ -125,3 +125,18 @@ class FileStorage(BaseFileStorage[T]):
             if all(getattr(record, k) == v for k, v in kwargs.items()):
                 filtered_records.append(record)
         return filtered_records
+
+    def delete(self, **kwargs: Any) -> list[T] | None:
+        """Delete an item by key and value."""
+        self.__validate_kwargs(kwargs)
+        deleted_record: list[T] = []
+        non_deleted_records: dict[int, T] = {}
+        for i, record in enumerate(self.all()):
+            if all(getattr(record, k) == v for k, v in kwargs.items()):
+                deleted_record.append(record)
+                del record
+                self.manager.write(non_deleted_records)
+                return deleted_record
+            else:
+                non_deleted_records[i + 1] = record
+        return None
