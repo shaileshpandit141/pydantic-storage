@@ -62,7 +62,7 @@ class BaseFileStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, items: T, **kwargs: Any) -> bool:
+    def update(self, items: T, **kwargs: Any) -> T:
         """Update item with provided kwargs"""
         raise NotImplementedError
 
