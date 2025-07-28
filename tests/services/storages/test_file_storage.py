@@ -133,3 +133,25 @@ def test_update_record(storage: FileStorage[FakeUser]) -> None:
             ),
             email="nonexistent@gmail.com",
         )
+
+
+def test_filter_records(storage: FileStorage[FakeUser]) -> None:
+    """Filter items based on kwargs."""
+    filtered_users = storage.filter(name="Alice")
+    assert isinstance(filtered_users, list)
+    assert all(isinstance(user, FakeUser) for user in filtered_users)
+    assert len(filtered_users) > 0
+    assert filtered_users[0].id == 1
+    assert filtered_users[0].name == "Alice"
+
+    # Test with non-existing filter
+    filtered_users = storage.filter(name="Non Existent")
+    assert len(filtered_users) == 0
+
+    # Test with multiple filters
+    filtered_users = storage.filter(
+        name="Alice",
+        email="alice@gmail.com",
+    )
+    assert filtered_users[0].id == 1
+    assert filtered_users[0].name == "Alice"
