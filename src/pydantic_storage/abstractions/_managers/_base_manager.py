@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic
 
-from pydantic_storage.types import BaseMetaDataDict, FileMetaDataDict, T
+from pydantic_storage.models import MetaData
+from pydantic_storage.types import MetaDataDict, T
 
 
 class BaseManager(ABC, Generic[T]):
@@ -12,26 +13,26 @@ class BaseManager(ABC, Generic[T]):
         self,
         uri: Path | str,
         model_class: type[T],
-        metadata: BaseMetaDataDict,
+        metadata: MetaDataDict,
         data: list[T],
     ) -> None:
         """Initialize the JsonFileManager."""
         self._file = uri if isinstance(uri, Path) else Path(uri)
         self._model_class = model_class
-        self._metadata = metadata
+        self._metadata: MetaData = MetaData(**metadata)
         self._data = data
         self._create()
         self._load()
 
     @property
     @abstractmethod
-    def metadata(self) -> FileMetaDataDict:
+    def metadata(self) -> MetaData:
         """Return all metadata"""
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def data(self) -> dict[str, T]:
+    def data(self) -> list[T]:
         """Return all data"""
         raise NotImplementedError
 
