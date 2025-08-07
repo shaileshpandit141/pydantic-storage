@@ -23,6 +23,11 @@ class FileManager(BaseManager[T]):
         """Return metadata from resource"""
         return self._metadata
 
+    @property
+    def data(self) -> list[T]:
+        """Return data from resource"""
+        return self._data
+
     def _load(self) -> None:
         """Load data from the resource file."""
         json_string: str = self._file.read_text(encoding="utf-8")
