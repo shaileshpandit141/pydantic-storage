@@ -15,9 +15,8 @@ class FileManager(BaseManager[T]):
         uri: Path | str,
         model_class: type[T],
         metadata: MetaDataDict,
-        data: list[T],
     ) -> None:
-        super().__init__(uri, model_class, metadata, data)
+        super().__init__(uri, model_class, metadata)
 
     def _load(self) -> None:
         """Load data from the resource file."""

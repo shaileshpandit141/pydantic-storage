@@ -14,13 +14,12 @@ class BaseManager(ABC, Generic[T]):
         uri: Path | str,
         model_class: type[T],
         metadata: MetaDataDict,
-        data: list[T],
     ) -> None:
         """Initialize the JsonFileManager."""
         self._file = uri if isinstance(uri, Path) else Path(uri)
         self._model_class = model_class
         self._metadata: MetaData = MetaData(**metadata)
-        self._data = data
+        self._data: list[T] = []
         self._create()
         self._load()
 
