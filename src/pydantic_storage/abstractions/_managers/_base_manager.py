@@ -26,13 +26,13 @@ class BaseManager(ABC, Generic[T]):
     @property
     @abstractmethod
     def metadata(self) -> MetaData:
-        """Return all metadata"""
+        """Return metadata from resource"""
         raise NotImplementedError
 
     @property
     @abstractmethod
     def data(self) -> list[T]:
-        """Return all data"""
+        """Return data from resource"""
         raise NotImplementedError
 
     @abstractmethod
