@@ -31,7 +31,10 @@ class Timestamp(BaseModel):
 
 
 class Storage(BaseModel):
-    type: str = Field(..., description="Storage backend type (e.g., local, s3)")
+    type: str = Field(..., description="Storage backend type (e.g., local, s3, ...)")
+    format: str = Field(
+        ..., description="Storage backend format (e.g., json, yml, ...)"
+    )
     encryption: str = Field(..., description="Encryption method used (e.g., AES256)")
 
 

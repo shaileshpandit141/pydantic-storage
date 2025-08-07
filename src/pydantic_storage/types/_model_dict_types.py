@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generic, NotRequired, TypeAlias, TypedDict
+from typing import Generic, NotRequired, TypedDict
 
 from ._generic_types import T
 
@@ -11,6 +11,7 @@ class TimestampDict(TypedDict):
 
 class StorageDict(TypedDict):
     type: str
+    format: str
     encryption: str
 
 
@@ -25,9 +26,6 @@ class FileMetaDataDict(BaseMetaDataDict):
     timestamps: NotRequired[TimestampDict]
 
 
-RecordsDict: TypeAlias = dict[int, T]
-
-
 class FileDataDict(TypedDict, Generic[T]):
     metadata: FileMetaDataDict
-    records: RecordsDict[T]
+    records: list[T]
