@@ -41,7 +41,7 @@ class FileManager(BaseManager[T]):
         json_string: str = Data(
             metadata=self._metadata,
             records=self._data,
-        ).model_dump_json()
+        ).model_dump_json(indent=2)
         self._file.write_text(json_string, encoding="utf-8")
 
     def _create(self) -> None:
