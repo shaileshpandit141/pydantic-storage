@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import TypeAdapter, ValidationError
 
 from pydantic_storage.abstractions import BaseManager
-from pydantic_storage.models import Data
+from pydantic_storage.models import Data, MetaData
 from pydantic_storage.types import MetaDataDict, T
 
 
@@ -17,6 +17,11 @@ class FileManager(BaseManager[T]):
         metadata: MetaDataDict,
     ) -> None:
         super().__init__(uri, model_class, metadata)
+
+    @property
+    def metadata(self) -> MetaData:
+        """Return metadata from resource"""
+        return self._metadata
 
     def _load(self) -> None:
         """Load data from the resource file."""
