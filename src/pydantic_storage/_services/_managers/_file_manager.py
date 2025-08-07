@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from pathlib import Path
 
 from pydantic import TypeAdapter, ValidationError
@@ -27,6 +28,21 @@ class FileManager(BaseManager[T]):
     def data(self) -> list[T]:
         """Return data from resource"""
         return self._data
+
+    def save(self) -> None:
+        """Save the current state of the resource."""
+        if hasattr(self._metadata.timestamps, "updated_at"):
+            setattr(
+                self._metadata.timestamps,
+                "updated_at",
+                datetime.now(timezone.utc),
+            )
+
+        json_string: str = Data(
+            metadata=self._metadata,
+            records=self._data,
+        ).model_dump_json()
+        self._file.write_text(json_string, encoding="utf-8")
 
     def _load(self) -> None:
         """Load data from the resource file."""
