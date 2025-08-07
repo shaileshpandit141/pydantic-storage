@@ -63,3 +63,8 @@ class FileManager(BaseManager[T]):
             raise ValidationError(
                 f"Failed to load data from \n{self._file}: \n{error}"
             ) from error
+
+    def write(self, data: list[T]) -> None:
+        """Write data to the resource."""
+        self._data.extend(data)
+        self.save()
