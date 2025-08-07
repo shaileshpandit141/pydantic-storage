@@ -36,6 +36,11 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
+    def save(self) -> None:
+        """Save the current state of the resource."""
+        raise NotImplementedError
+
+    @abstractmethod
     def _create(self) -> None:
         """Create the resource if it does not exist."""
         raise NotImplementedError
@@ -43,11 +48,6 @@ class BaseManager(ABC, Generic[T]):
     @abstractmethod
     def _load(self) -> None:
         """Load data from the resource."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def save(self) -> None:
-        """Save the current state of the resource."""
         raise NotImplementedError
 
     @abstractmethod
