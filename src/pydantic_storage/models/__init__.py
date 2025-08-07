@@ -1,17 +1,8 @@
-from ._models import (
-    BaseMetaData,
-    FileData,
-    FileMetaData,
-    Storage,
-    T,
-    Timestamp,
-    now_utc,
-)
+from ._models import Data, MetaData, Storage, T, Timestamp, now_utc
 
 __all__ = [
-    "BaseMetaData",
-    "FileData",
-    "FileMetaData",
+    "MetaData",
+    "Data",
     "Storage",
     "T",
     "Timestamp",

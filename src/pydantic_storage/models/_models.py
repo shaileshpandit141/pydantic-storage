@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
-from typing import Any, ClassVar, Generic
+from typing import ClassVar, Generic
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..types import T
 
@@ -20,15 +20,6 @@ class Timestamp(BaseModel):
         description="Last update timestamp (UTC)",
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def update_timestamp(cls, values: dict[str, Any]) -> dict[str, Any]:
-        now: datetime = now_utc()
-        if "created_at" not in values:
-            values["created_at"] = now
-        values["updated_at"] = now
-        return values
-
 
 class Storage(BaseModel):
     type: str = Field(..., description="Storage backend type (e.g., local, s3, ...)")
@@ -38,7 +29,7 @@ class Storage(BaseModel):
     encryption: str = Field(..., description="Encryption method used (e.g., AES256)")
 
 
-class BaseMetaData(BaseModel):
+class MetaData(BaseModel):
     version: str = Field(
         default="1.0.0",
         description="Schema or file version",
@@ -46,17 +37,14 @@ class BaseMetaData(BaseModel):
     )
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
-
-
-class FileMetaData(BaseMetaData):
-    storage: Storage
+    storage: Storage | None = None
     timestamps: Timestamp | None = None
 
 
-class FileData(BaseModel, Generic[T]):
-    metadata: FileMetaData
-    records: dict[int, T] = Field(
-        default_factory=dict[int, T],
+class Data(BaseModel, Generic[T]):
+    metadata: MetaData
+    records: list[T] = Field(
+        default_factory=list[T],
         description="Keyed collection of typed records",
     )
 
@@ -66,16 +54,23 @@ class FileData(BaseModel, Generic[T]):
         "examples": [
             {
                 "metadata": {
-                    "version": "1.0",
+                    "version": "1.0.0",
                     "title": "Example File",
                     "description": "Sample metadata",
-                    "storage": {"type": "s3", "encryption": "AES256"},
+                    "storage": {
+                        "type": "file",
+                        "format": "json",
+                        "encryption": "AES256",
+                    },
                     "timestamps": {
                         "created_at": "2025-01-01T00:00:00Z",
                         "updated_at": "2025-07-01T00:00:00Z",
                     },
                 },
-                "records": {1: {"id": 1, "name": "Alice"}},
+                "records": [
+                    {"id": 1, "name": "Alice"},
+                    {"id": 2, "name": "Bob"},
+                ],  # Example records,
             }
         ]
     }
