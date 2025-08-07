@@ -44,6 +44,12 @@ class FileManager(BaseManager[T]):
         ).model_dump_json()
         self._file.write_text(json_string, encoding="utf-8")
 
+    def _create(self) -> None:
+        """Create the resource if it does not exist."""
+        if not self._file.exists():
+            self._file.touch(exist_ok=True)
+        self.save()
+
     def _load(self) -> None:
         """Load data from the resource file."""
         json_string: str = self._file.read_text(encoding="utf-8")
