@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Generic
 
-from pydantic_storage.types import BaseMetaDataDict, T
+from pydantic_storage.types import MetaDataDict, T
 
 
 class BaseFileStorage(ABC, Generic[T]):
@@ -12,13 +12,13 @@ class BaseFileStorage(ABC, Generic[T]):
         self,
         file_path: str,
         model_class: type[T],
-        metadata: BaseMetaDataDict,
+        metadata: MetaDataDict,
         unique_fields: list[str] | None = None,
     ) -> None:
         """Initialize the AbstractFileStorage."""
         self.file_path: Path = Path(file_path)
         self.model_class: type[T] = model_class
-        self.metadata: BaseMetaDataDict = metadata
+        self.metadata: MetaDataDict = metadata
         self.unique_fields: list[str] = unique_fields or []
 
     @abstractmethod
