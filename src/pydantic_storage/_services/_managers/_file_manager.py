@@ -85,7 +85,7 @@ class FileManager(BaseManager[T]):
                 f"Failed to load data from {self._file}:\n{error}"
             ) from error
 
-    def next_id(self) -> int:
+    def auto_id(self) -> int:
         """Return next id as for stored records"""
         return len(self._data) + 1
 

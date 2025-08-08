@@ -51,7 +51,7 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def next_id(self) -> int:
+    def auto_id(self) -> int:
         """Return next id as for stored records"""
         raise NotImplementedError
 
