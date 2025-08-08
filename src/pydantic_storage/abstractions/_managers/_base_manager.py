@@ -14,12 +14,14 @@ class BaseManager(ABC, Generic[T]):
         uri: Path | str,
         model_class: type[T],
         metadata: MetaDataDict,
+        auto_id_field: str | None = None,
     ) -> None:
         """Initialize the JsonFileManager."""
         self._file = uri if isinstance(uri, Path) else Path(uri)
         self._model_class = model_class
         self._metadata: MetaData = MetaData(**metadata)
         self._data: list[T] = []
+        self._auto_id_field = auto_id_field
         self._create()
         self._load()
 
@@ -51,7 +53,7 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def auto_id(self) -> int:
+    def next_id(self) -> int:
         """Return next id as for stored records"""
         raise NotImplementedError
 

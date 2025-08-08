@@ -1,3 +1,4 @@
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -17,8 +18,9 @@ class FileManager(BaseManager[T]):
         uri: Path | str,
         model_class: type[T],
         metadata: MetaDataDict,
+        auto_id_field: str | None = None,
     ) -> None:
-        super().__init__(uri, model_class, metadata)
+        super().__init__(uri, model_class, metadata, auto_id_field)
 
     @property
     def metadata(self) -> MetaData:
@@ -85,11 +87,20 @@ class FileManager(BaseManager[T]):
                 f"Failed to load data from {self._file}:\n{error}"
             ) from error
 
-    def auto_id(self) -> int:
+    def next_id(self) -> int:
         """Return next id as for stored records"""
         return len(self._data) + 1
 
     def write(self, data: list[T]) -> None:
         """Write data to the resource."""
-        self._data.extend(data)
+        for record in data:
+            if self._auto_id_field:
+                if hasattr(record, self._auto_id_field):
+                    setattr(record, self._auto_id_field, self.next_id())
+                else:
+                    warnings.warn(
+                        message=f"Invalid auto id field. {self._auto_id_field} field attribute does't exist",
+                        category=UserWarning,
+                    )
+            self._data.append(record)
         self.save()
