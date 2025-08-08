@@ -1,5 +1,4 @@
 from pydantic_storage._services import FileManager
-from pydantic_storage.models import FileData
 from tests.mocks.models import FakeUser
 
 # ================
@@ -12,39 +11,54 @@ def test_json_file_manager_instance_created(
 ) -> None:
     """Testing json file manager instance creation"""
     assert isinstance(manager, FileManager)
+    assert isinstance(manager.data, list)
+    assert isinstance(manager.metadata.version, str)
+    assert len(manager.metadata.version) == 5
+    assert isinstance(manager.metadata.title, str)
+    assert isinstance(manager.metadata.description, str)
 
 
-def test_read_method(
+def test_write_data(
     manager: FileManager[FakeUser],
 ) -> None:
-    """Testing read method"""
-    data: FileData[FakeUser] = manager.read()
+    data: list[FakeUser] = [
+        FakeUser(
+            name="shailesh",
+            email="shailesh@gmail.com",
+        ),
+        FakeUser(
+            name="yash",
+            email="yash@gmail.com",
+        ),
+        FakeUser(
+            name="json",
+            email="json@gmail.com",
+        ),
+        FakeUser(
+            name="nice",
+            email="nice@gmail.com",
+        ),
+    ]
+    manager.write(data=data)
 
-    # Check present records
-    assert isinstance(data.metadata.version, str)
-    assert isinstance(data.metadata.title, str)
-    assert isinstance(data.metadata.description, str)
-    assert isinstance(data.records, dict)
+    assert len(manager.data) == 4
+    assert manager.data[0].id == 1
+    assert manager.data[-1].id == 4
+    assert isinstance(manager.data[0], FakeUser)
 
 
-def test_write_and_read_users(
+def test_write_more_data(
     manager: FileManager[FakeUser],
 ) -> None:
-    """Testing write method"""
-    users: dict[int, FakeUser] = {
-        1: FakeUser(id=1, name="Alice", email="alice@gmail.com"),
-        2: FakeUser(id=2, name="Bob", email="bob@gmail.com"),
-        3: FakeUser(id=3, name="Charlie", email="charlie@gmail.com"),
-    }
+    data: list[FakeUser] = [
+        FakeUser(
+            name="yashika",
+            email="yashika@gmail.com",
+        ),
+    ]
+    manager.write(data=data)
 
-    # Write all records to json file
-    manager.write(users)
-
-    # Read all record from json file
-    data: FileData[FakeUser] = manager.read()
-
-    # Check all records are present
-    assert len(data.records) == 3
-    assert data.records[1].name == "Alice"
-    assert data.records[2].name == "Bob"
-    assert data.records[3].name == "Charlie"
+    assert len(manager.data) == 5
+    assert manager.data[0].id == 1
+    assert manager.data[-1].id == 5
+    assert isinstance(manager.data[0], FakeUser)
