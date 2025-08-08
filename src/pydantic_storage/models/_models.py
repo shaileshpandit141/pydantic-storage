@@ -38,7 +38,7 @@ class MetaData(BaseModel):
     title: str = Field(..., description="Human-readable title of the file")
     description: str = Field(..., description="Brief description of the file contents")
     storage: Storage | None = None
-    timestamps: Timestamp | None = None
+    timestamps: Timestamp = Timestamp()
 
 
 class Data(BaseModel, Generic[T]):
