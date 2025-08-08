@@ -30,7 +30,7 @@ class FileManager(BaseManager[T]):
         """Return data from resource"""
         return self._data
 
-    def save(self) -> None:
+    def save(self, raise_exception: bool = False) -> bool:
         """Save the current state of the resource."""
         json_string: str = self._file.read_text(encoding="utf-8")
         adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
@@ -44,14 +44,20 @@ class FileManager(BaseManager[T]):
                     data.metadata.timestamps.created_at
                 )
                 self._metadata.timestamps.updated_at = datetime.now(timezone.utc)
-        except Exception:
-            pass
+        except Exception as error:
+            if raise_exception:
+                raise FileDataLoadError(
+                    f"Failed to load data from {self._file}:\n{error}"
+                ) from error
+            else:
+                return False
 
         loaded_json_string: str = Data(
             metadata=self.metadata,
             records=self._data,
         ).model_dump_json(indent=2)
         self._file.write_text(loaded_json_string, encoding="utf-8")
+        return True
 
     def _create(self) -> None:
         """Create the resource if it does not exist."""
