@@ -4,12 +4,9 @@ from pathlib import Path
 from pydantic import TypeAdapter
 
 from pydantic_storage.abstractions import BaseManager
+from pydantic_storage.exceptions import FileDataLoadError
 from pydantic_storage.models import Data, MetaData
 from pydantic_storage.types import MetaDataDict, T
-
-
-class FileManagerDataLoadError(Exception):
-    pass
 
 
 class FileManager(BaseManager[T]):
@@ -72,7 +69,7 @@ class FileManager(BaseManager[T]):
             self._data = data.records
             self._metadata = data.metadata
         except Exception as error:
-            raise FileManagerDataLoadError(
+            raise FileDataLoadError(
                 f"Failed to load data from {self._file}:\n{error}"
             ) from error
 
