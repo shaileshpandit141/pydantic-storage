@@ -1,11 +1,15 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pydantic import TypeAdapter, ValidationError
+from pydantic import TypeAdapter
 
 from pydantic_storage.abstractions import BaseManager
 from pydantic_storage.models import Data, MetaData
 from pydantic_storage.types import MetaDataDict, T
+
+
+class FileManagerDataLoadError(Exception):
+    pass
 
 
 class FileManager(BaseManager[T]):
@@ -31,18 +35,26 @@ class FileManager(BaseManager[T]):
 
     def save(self) -> None:
         """Save the current state of the resource."""
-        if hasattr(self._metadata.timestamps, "updated_at"):
-            setattr(
-                self._metadata.timestamps,
-                "updated_at",
-                datetime.now(timezone.utc),
-            )
+        json_string: str = self._file.read_text(encoding="utf-8")
+        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
 
-        json_string: str = Data(
-            metadata=self._metadata,
+        try:
+            data = adapter.validate_json(json_string)
+            merged = {**data.metadata.model_dump(), **self._metadata.model_dump()}
+            self._metadata = MetaData(**merged)
+            if self._metadata.timestamps:
+                self._metadata.timestamps.created_at = (
+                    data.metadata.timestamps.created_at
+                )
+                self._metadata.timestamps.updated_at = datetime.now(timezone.utc)
+        except Exception:
+            pass
+
+        loaded_json_string: str = Data(
+            metadata=self.metadata,
             records=self._data,
         ).model_dump_json(indent=2)
-        self._file.write_text(json_string, encoding="utf-8")
+        self._file.write_text(loaded_json_string, encoding="utf-8")
 
     def _create(self) -> None:
         """Create the resource if it does not exist."""
@@ -53,15 +65,15 @@ class FileManager(BaseManager[T]):
     def _load(self) -> None:
         """Load data from the resource file."""
         json_string: str = self._file.read_text(encoding="utf-8")
-        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])
+        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
 
         try:
             data = adapter.validate_json(json_string)
             self._data = data.records
             self._metadata = data.metadata
         except Exception as error:
-            raise ValidationError(
-                f"Failed to load data from \n{self._file}: \n{error}"
+            raise FileManagerDataLoadError(
+                f"Failed to load data from {self._file}:\n{error}"
             ) from error
 
     def write(self, data: list[T]) -> None:
