@@ -5,7 +5,7 @@ from pydantic import TypeAdapter
 
 from pydantic_storage.abstractions import BaseManager
 from pydantic_storage.exceptions import FileDataLoadError
-from pydantic_storage.models import Data, MetaData
+from pydantic_storage.models import Data, MetaData, Storage
 from pydantic_storage.types import MetaDataDict, T
 
 
@@ -44,6 +44,12 @@ class FileManager(BaseManager[T]):
                     data.metadata.timestamps.created_at
                 )
                 self._metadata.timestamps.updated_at = datetime.now(timezone.utc)
+
+            self._metadata.storage = Storage(
+                type="file",
+                format="json",
+                encryption="utf-8",
+            )
         except Exception as error:
             if raise_exception:
                 raise FileDataLoadError(
