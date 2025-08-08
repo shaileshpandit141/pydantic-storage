@@ -51,6 +51,11 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
+    def next_id(self) -> int:
+        """Return next id as for stored records"""
+        raise NotImplementedError
+
+    @abstractmethod
     def write(self, data: list[T]) -> None:
         """Write data to the resource."""
         raise NotImplementedError
