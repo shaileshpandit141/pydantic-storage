@@ -48,9 +48,10 @@ class FileManager(BaseManager[T]):
                 self._metadata.timestamps.updated_at = datetime.now(timezone.utc)
 
             self._metadata.storage = Storage(
-                type="file",
+                backend="file",
                 format="json",
-                encryption="utf-8",
+                encryption="none",
+                uri=self._file.as_uri(),
             )
         except Exception as error:
             if raise_exception:
