@@ -1,5 +1,9 @@
 # 🗃️ PydanticStorage
 
+[![PyPI version](https://img.shields.io/pypi/v/pydantic-storage.svg)](https://pypi.org/project/pydantic-storage/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pydantic-storage.svg)](https://pypi.org/project/pydantic-storage/)
+[![License](https://img.shields.io/pypi/l/pydantic-storage.svg)](https://github.com/yourusername/pydantic-storage/blob/main/LICENSE)
+
 A lightweight, extensible, and fully type-safe data storage system built with **Pydantic** and modern Python. Initially file-based (JSON), it's designed to support multiple backends like CSV, SQL, and more. It enables persistent storage of Pydantic models, auto-generated IDs, metadata, uniqueness constraints, partial updates, and structured storage with a real-world schema.
 
 ## 🚀 Features
