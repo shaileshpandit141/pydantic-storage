@@ -62,10 +62,10 @@ class FileManager(BaseManager[T]):
     def update_storage(self) -> None:
         """Update storage data"""
         self._metadata.storage = Storage(
+            uri=self._file.resolve().as_uri(),
             backend="file",
             format="json",
             encryption="none",
-            uri=self._file.resolve().as_uri(),
         )
 
     def save(
