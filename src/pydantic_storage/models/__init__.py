@@ -1,4 +1,4 @@
-from ._models import Data, MetaData, Storage, T, Timestamp, now_utc
+from ._models import Data, MetaData, Storage, T, Timestamp
 
 __all__ = [
     "MetaData",
@@ -6,5 +6,4 @@ __all__ = [
     "Storage",
     "T",
     "Timestamp",
-    "now_utc",
 ]
