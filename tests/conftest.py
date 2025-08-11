@@ -9,7 +9,7 @@ from tests.mocks.models import FakeUser
 @fixture(scope="module")
 def manager() -> FileManager[FakeUser]:
     return FileManager[FakeUser](
-        uri="tests/db_files/users.json",
+        uri="tests/db/users.json",
         model_class=FakeUser,
         metadata={
             "version": "1.0.0",
