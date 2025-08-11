@@ -1,7 +1,6 @@
-import warnings
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Annotated, Literal, get_args, get_origin
 
 from pydantic import TypeAdapter, ValidationError
 
@@ -9,6 +8,7 @@ from pydantic_storage.abstractions import BaseManager
 from pydantic_storage.exceptions import FileDataLoadError
 from pydantic_storage.models import Data, MetaData, Storage, Timestamp
 from pydantic_storage.types import MetaDataDict, T
+from pydantic_storage.types._auto_id import AutoIDMarker
 
 
 class FileManager(BaseManager[T]):
@@ -19,9 +19,8 @@ class FileManager(BaseManager[T]):
         uri: Path | str,
         model_class: type[T],
         metadata: MetaDataDict,
-        auto_id_field: str | None = None,
     ) -> None:
-        super().__init__(uri, model_class, metadata, auto_id_field)
+        super().__init__(uri, model_class, metadata)
 
     @property
     def metadata(self) -> MetaData:
@@ -122,15 +121,15 @@ class FileManager(BaseManager[T]):
         return len(self._data) + 1
 
     def write(self, data: list[T]) -> None:
-        """Write data to the resource."""
+        """Write data to the resource, auto-assigning IDs for AutoID fields."""
         for record in data:
-            if self._auto_id_field:
-                if hasattr(record, self._auto_id_field):
-                    setattr(record, self._auto_id_field, self.next_id())
-                else:
-                    warnings.warn(
-                        message=f"Invalid auto id field. {self._auto_id_field} field attribute does't exist",
-                        category=UserWarning,
-                    )
+            annotations = getattr(record.__class__, "__annotations__", {})
+            for field_name, annotation in annotations.items():
+                if get_origin(annotation) is Annotated:
+                    args = get_args(annotation)
+                    if args[0] is int and any(a is AutoIDMarker for a in args):
+                        if getattr(record, field_name) == 0:
+                            setattr(record, field_name, self.next_id())
+                        break
             self._data.append(record)
         self.save(action="modified")
