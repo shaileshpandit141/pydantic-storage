@@ -15,9 +15,13 @@ class Timestamp(BaseModel):
         default_factory=now_utc,
         description="Creation timestamp (UTC)",
     )
-    updated_at: datetime = Field(
+    accessed_at: datetime = Field(
         default_factory=now_utc,
-        description="Last update timestamp (UTC)",
+        description="Last accessed timestamp (UTC)",
+    )
+    modified_at: datetime = Field(
+        default_factory=now_utc,
+        description="Last modified timestamp (UTC)",
     )
 
 

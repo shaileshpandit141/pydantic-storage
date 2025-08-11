@@ -1,12 +1,13 @@
 import warnings
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Literal
 
 from pydantic import TypeAdapter, ValidationError
 
 from pydantic_storage.abstractions import BaseManager
 from pydantic_storage.exceptions import FileDataLoadError
-from pydantic_storage.models import Data, MetaData, Storage
+from pydantic_storage.models import Data, MetaData, Storage, Timestamp
 from pydantic_storage.types import MetaDataDict, T
 
 
@@ -25,12 +26,39 @@ class FileManager(BaseManager[T]):
     @property
     def metadata(self) -> MetaData:
         """Return metadata from resource"""
+        # Update metadata and save to file
+        self.update_timestamps(self._metadata.timestamps, "accessed_at")
+        self.save()
         return self._metadata
 
     @property
     def data(self) -> list[T]:
         """Return data from resource"""
+        # Update metadata and save to file
+        self.update_timestamps(self._metadata.timestamps, "accessed_at")
+        self.save()
         return self._data
+
+    def update_timestamps(
+        self,
+        stored_timestamps: Timestamp,
+        field: Literal["created_at", "accessed_at", "modified_at"],
+    ) -> None:
+        """Update timestamps for resource action"""
+        current_timestamps: Timestamp = self._metadata.timestamps
+
+        now = datetime.now(timezone.utc)
+        current_timestamps.created_at = stored_timestamps.created_at
+
+        if field == "created_at":
+            current_timestamps.accessed_at = stored_timestamps.accessed_at
+            current_timestamps.modified_at = stored_timestamps.modified_at
+        elif field == "accessed_at":
+            current_timestamps.accessed_at = now
+            current_timestamps.modified_at = stored_timestamps.modified_at
+        else:
+            current_timestamps.accessed_at = stored_timestamps.accessed_at
+            current_timestamps.modified_at = now
 
     def save(self, raise_exception: bool = False) -> None:
         """Save the current state of the resource."""
@@ -41,19 +69,14 @@ class FileManager(BaseManager[T]):
             data = adapter.validate_json(json_string)
             merged = {**data.metadata.model_dump(), **self._metadata.model_dump()}
             self._metadata = MetaData(**merged)
-            if self._metadata.timestamps:
-                self._metadata.timestamps.created_at = (
-                    data.metadata.timestamps.created_at
-                )
-                self._metadata.timestamps.updated_at = datetime.now(timezone.utc)
 
+            # Update storage data
             self._metadata.storage = Storage(
                 backend="file",
                 format="json",
                 encryption="none",
                 uri=self._file.resolve().as_uri(),
             )
-
         except ValidationError as error:
             if raise_exception:
                 raise FileDataLoadError(
@@ -61,7 +84,7 @@ class FileManager(BaseManager[T]):
                 ) from error
 
         loaded_json_string: str = Data(
-            metadata=self.metadata,
+            metadata=self._metadata,
             records=self._data,
         ).model_dump_json(indent=2)
         self._file.write_text(loaded_json_string, encoding="utf-8")
@@ -70,6 +93,8 @@ class FileManager(BaseManager[T]):
         """Create the resource if it does not exist."""
         if not self._file.exists():
             self._file.touch(exist_ok=True)
+            # Update metadata as for action
+            self.update_timestamps(self._metadata.timestamps, "created_at")
         self.save()
 
     def _load(self) -> None:
@@ -102,4 +127,6 @@ class FileManager(BaseManager[T]):
                         category=UserWarning,
                     )
             self._data.append(record)
+        # Update metadata and save to file
+        self.update_timestamps(self._metadata.timestamps, "modified_at")
         self.save()
