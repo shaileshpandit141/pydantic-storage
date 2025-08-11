@@ -38,7 +38,7 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def save(self, raise_exception: bool = False) -> bool:
+    def save(self, raise_exception: bool = False) -> None:
         """Save the current state of the resource."""
         raise NotImplementedError
 
