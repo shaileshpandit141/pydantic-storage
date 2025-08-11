@@ -4,9 +4,10 @@
 
 [project]
 name = "pydantic-storage"
-version = "0.1.0"
-description = """"A lightweight, type-safe storage system for Pydantic models 
+version = "0.1.1"
+description = """A lightweight, type-safe storage system for Pydantic models 
 with support for multiple backends and persistent storage."""
+readme = { file = "README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 authors = [
   { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" },
