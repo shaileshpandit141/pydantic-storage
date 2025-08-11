@@ -48,9 +48,9 @@ from pydantic_storage import JsonFileStorage
 
 store = JsonFileStorage(
     model=User,
-    file_name="users.json",
-    unique_by=["email"],  # Optional: default is ['id']
-    metadata={  # Optional
+    uri="records/users.json",
+    unique_fileds=["email"],
+    metadata={
         "version": "1.0.0",
         "title": "User Store",
         "description": "Stores user info",
@@ -106,29 +106,47 @@ store.bulk_create([
 {
   "metadata": {
     "version": "1.0.0",
-    "title": "User Store",
-    "description": "Stores user info",
+    "title": "User records",
+    "description": "User record descriptions",
     "storage": {
-        "type": "file",
-        "encryption": "none"
+      "backend": "file",
+      "format": "json",
+      "encryption": "none",
+      "uri": "file:///mnt/data/workshop/applications/pypi-package/pydantic-storage/tests/db_files/users.json"
     },
     "timestamps": {
-        "created_at": "2025-07-01T15:30:00Z",
-        "updated_at": "2025-07-01T15:45:23Z"
+      "created_at": "2025-08-11T13:54:05.071548Z",
+      "accessed_at": "2025-08-11T13:56:19.872671Z",
+      "modified_at": "2025-08-11T13:56:19.872308Z"
     }
   },
-  "records": {
-    "1": { 
-        "id": 1, 
-        "name": "Alice", 
-        "email": "alice@example.com" 
+  "records": [
+    {
+      "id": 1,
+      "name": "shailesh",
+      "email": "shailesh@gmail.com"
     },
-    "2": { 
-        "id": 2,
-        "name": "Bob",
-        "email": "bob@example.com"
+    {
+      "id": 2,
+      "name": "yash",
+      "email": "yash@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "json",
+      "email": "json@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "nice",
+      "email": "nice@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "yashika",
+      "email": "yashika@gmail.com"
     }
-  }
+  ]
 }
 ```
 
