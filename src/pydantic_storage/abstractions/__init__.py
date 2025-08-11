@@ -1,4 +1,4 @@
 from ._managers._base_manager import BaseManager
-from ._storages._base_file_storage import BaseFileStorage
+from ._storages._base_storage import BaseStorage
 
-__all__ = ["BaseManager", "BaseFileStorage"]
+__all__ = ["BaseManager", "BaseStorage"]
