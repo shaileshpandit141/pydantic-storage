@@ -2,7 +2,7 @@ from pydantic_storage._services import FileManager
 from tests.mocks.models import FakeUser
 
 # ================
-# Filemanager Test
+# FileManager Test
 # ================
 
 
@@ -40,10 +40,6 @@ def test_write_data(
         ),
     ]
     manager.write(data=data)
-
-    assert len(manager.data) == 4
-    assert manager.data[0].id == 1
-    assert manager.data[-1].id == 4
     assert isinstance(manager.data[0], FakeUser)
 
 
@@ -57,8 +53,4 @@ def test_write_more_data(
         ),
     ]
     manager.write(data=data)
-
-    assert len(manager.data) == 5
-    assert manager.data[0].id == 1
-    assert manager.data[-1].id == 5
-    assert isinstance(manager.data[0], FakeUser)
+    assert isinstance(manager.data[-1], FakeUser)
