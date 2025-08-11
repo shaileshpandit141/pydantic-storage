@@ -16,7 +16,6 @@ def manager() -> FileManager[FakeUser]:
             "title": "User records",
             "description": "User record descriptions",
         },
-        auto_id_field="id",
     )
 
 
