@@ -31,6 +31,29 @@ classifiers = [
   "Topic :: Security :: Cryptography",
   "Topic :: File Formats :: JSON",
 ]
+keywords = [
+  "pydantic",
+  "data-storage",
+  "json-storage",
+  "file-storage",
+  "persistent-storage",
+  "type-safe",
+  "python3",
+  "datastore",
+  "metadata",
+  "unique-constraint",
+  "pydantic-model",
+  "schema-validation",
+  "data-validation",
+  "data-management",
+  "model-storage",
+  "object-storage",
+  "lightweight-storage",
+  "python-storage",
+  "partial-update",
+  "bulk-create",
+  "structured-storage",
+]
 requires-python = ">=3.13"
 dependencies = ["iniconfig>=2.1.0", "pydantic>=2.11.7"]
 
