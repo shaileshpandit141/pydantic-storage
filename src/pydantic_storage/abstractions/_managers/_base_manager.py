@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Generic
+from typing import Generic, Literal
 
-from pydantic_storage.models import MetaData
+from pydantic_storage.models import Data, MetaData
 from pydantic_storage.types import MetaDataDict, T
 
 
@@ -22,8 +22,14 @@ class BaseManager(ABC, Generic[T]):
         self._metadata: MetaData = MetaData(**metadata)
         self._data: list[T] = []
         self._auto_id_field = auto_id_field
+        self.initialize()
+
+    def initialize(self) -> None:
+        """Initialize the current state"""
         self._create()
-        self._load()
+        data: Data[T] = self._load()
+        self._data = data.records
+        self._metadata = data.metadata
 
     @property
     @abstractmethod
@@ -38,7 +44,11 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def save(self, raise_exception: bool = False) -> None:
+    def save(
+        self,
+        action: Literal["created", "accessed", "modified"],
+        raise_exception: bool = False,
+    ) -> None:
         """Save the current state of the resource."""
         raise NotImplementedError
 
@@ -48,7 +58,7 @@ class BaseManager(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def _load(self) -> None:
+    def _load(self) -> Data[T]:
         """Load data from the resource."""
         raise NotImplementedError
 

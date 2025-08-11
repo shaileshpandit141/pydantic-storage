@@ -26,17 +26,13 @@ class FileManager(BaseManager[T]):
     @property
     def metadata(self) -> MetaData:
         """Return metadata from resource"""
-        # Update metadata and save to file
-        self.update_timestamps(self._metadata.timestamps, "accessed_at")
-        self.save()
+        self.save(action="accessed")
         return self._metadata
 
     @property
     def data(self) -> list[T]:
         """Return data from resource"""
-        # Update metadata and save to file
-        self.update_timestamps(self._metadata.timestamps, "accessed_at")
-        self.save()
+        self.save(action="accessed")
         return self._data
 
     def update_timestamps(
@@ -60,53 +56,63 @@ class FileManager(BaseManager[T]):
             current_timestamps.accessed_at = stored_timestamps.accessed_at
             current_timestamps.modified_at = now
 
-    def save(self, raise_exception: bool = False) -> None:
+    def update_meradata(self, metadata: MetaData) -> None:
+        merged = {**metadata.model_dump(), **self._metadata.model_dump()}
+        self._metadata = MetaData(**merged)
+
+    def update_storage(self) -> None:
+        """Update storage data"""
+        self._metadata.storage = Storage(
+            backend="file",
+            format="json",
+            encryption="none",
+            uri=self._file.resolve().as_uri(),
+        )
+
+    def save(
+        self,
+        action: Literal["created", "accessed", "modified"],
+        raise_exception: bool = False,
+    ) -> None:
         """Save the current state of the resource."""
-        json_string: str = self._file.read_text(encoding="utf-8")
-        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
-
         try:
-            data = adapter.validate_json(json_string)
-            merged = {**data.metadata.model_dump(), **self._metadata.model_dump()}
-            self._metadata = MetaData(**merged)
-
-            # Update storage data
-            self._metadata.storage = Storage(
-                backend="file",
-                format="json",
-                encryption="none",
-                uri=self._file.resolve().as_uri(),
-            )
-        except ValidationError as error:
+            data = self._load()
+            self.update_meradata(data.metadata)
+            self.update_storage()
+            if action == "created":
+                self.update_timestamps(data.metadata.timestamps, "created_at")
+            elif action == "accessed":
+                self.update_timestamps(data.metadata.timestamps, "accessed_at")
+            elif action == "modified":
+                self.update_timestamps(data.metadata.timestamps, "modified_at")
+        except FileDataLoadError as error:
             if raise_exception:
                 raise FileDataLoadError(
                     f"Failed to load data from {self._file}:\n{error}"
                 ) from error
 
-        loaded_json_string: str = Data(
+        # Convert pydnatic model to josn
+        json_string: str = Data(
             metadata=self._metadata,
             records=self._data,
         ).model_dump_json(indent=2)
-        self._file.write_text(loaded_json_string, encoding="utf-8")
+        self._file.write_text(json_string, encoding="utf-8")
 
     def _create(self) -> None:
         """Create the resource if it does not exist."""
         if not self._file.exists():
             self._file.touch(exist_ok=True)
-            # Update metadata as for action
-            self.update_timestamps(self._metadata.timestamps, "created_at")
-        self.save()
+        self.save(action="created")
 
-    def _load(self) -> None:
+    def _load(self) -> Data[T]:
         """Load data from the resource file."""
         json_string: str = self._file.read_text(encoding="utf-8")
         adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
 
         try:
             data = adapter.validate_json(json_string)
-            self._data = data.records
-            self._metadata = data.metadata
-        except Exception as error:
+            return data
+        except ValidationError as error:
             raise FileDataLoadError(
                 f"Failed to load data from {self._file}:\n{error}"
             ) from error
@@ -127,6 +133,4 @@ class FileManager(BaseManager[T]):
                         category=UserWarning,
                     )
             self._data.append(record)
-        # Update metadata and save to file
-        self.update_timestamps(self._metadata.timestamps, "modified_at")
-        self.save()
+        self.save(action="modified")
