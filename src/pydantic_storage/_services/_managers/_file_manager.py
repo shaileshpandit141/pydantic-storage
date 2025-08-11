@@ -17,10 +17,10 @@ class FileManager(BaseManager[T]):
     def __init__(
         self,
         uri: Path | str,
-        model_class: type[T],
+        model: type[T],
         metadata: MetaDataDict,
     ) -> None:
-        super().__init__(uri, model_class, metadata)
+        super().__init__(uri, model, metadata)
 
     @property
     def metadata(self) -> MetaData:
@@ -106,7 +106,7 @@ class FileManager(BaseManager[T]):
     def _load(self) -> Data[T]:
         """Load data from the resource file."""
         json_string: str = self._file.read_text(encoding="utf-8")
-        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model_class])  # type: ignore
+        adapter: TypeAdapter[Data[T]] = TypeAdapter(Data[self._model])  # type: ignore
 
         try:
             data = adapter.validate_json(json_string)

@@ -12,12 +12,12 @@ class BaseManager(ABC, Generic[T]):
     def __init__(
         self,
         uri: Path | str,
-        model_class: type[T],
+        model: type[T],
         metadata: MetaDataDict,
     ) -> None:
         """Initialize the JsonFileManager."""
         self._file = uri if isinstance(uri, Path) else Path(uri)
-        self._model_class = model_class
+        self._model = model
         self._metadata: MetaData = MetaData(**metadata)
         self._data: list[T] = []
         self.initialize()

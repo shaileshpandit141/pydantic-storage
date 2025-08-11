@@ -10,7 +10,7 @@ from tests.mocks.models import FakeUser
 def manager() -> FileManager[FakeUser]:
     return FileManager[FakeUser](
         uri="tests/db/users.json",
-        model_class=FakeUser,
+        model=FakeUser,
         metadata={
             "version": "1.0.0",
             "title": "User records",
@@ -20,8 +20,8 @@ def manager() -> FileManager[FakeUser]:
 
 
 @fixture(scope="module")
-def storage() -> FileStorage[FakeUser]:
-    return FileStorage[FakeUser](
+def storage() -> FileStorage:
+    return FileStorage(
         file_path="./users.json",
         model_class=FakeUser,
         metadata={
