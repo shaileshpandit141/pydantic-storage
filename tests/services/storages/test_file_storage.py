@@ -7,5 +7,5 @@ def test_file_storage_instance(
 ) -> None:
     """Test the instance of FileStorage."""
     assert isinstance(file_storage.uri, str)
-    assert isinstance(file_storage.model, FakeUser)
     assert isinstance(file_storage.unique_fields, list)
+    assert file_storage.model is FakeUser
