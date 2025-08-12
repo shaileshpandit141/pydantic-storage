@@ -88,26 +88,36 @@ class FileStorage(BaseStorage[T]):
         data: list[T],
         duplicate: Literal["skip", "update"] = "skip",
     ) -> list[T]:
-        """Create a new item in the data storage."""
+        """Create new items in the data storage."""
         create_list: list[T] = []
+
         for create_model in data:
             create_model_dict = create_model.model_dump()
+            duplicate_found = False
+
             for stored_model in self.data:
                 stored_model_dict = stored_model.model_dump()
-                if not all(
-                    [
-                        create_model_dict[field] == stored_model_dict[field]
-                        for field in self._unique_fields
-                    ]
+
+                # Check if any unique field matches => duplicate
+                if any(
+                    create_model_dict[field] == stored_model_dict[field]
+                    for field in self._unique_fields
                 ):
-                    create_list.append(create_model)
-                else:
+                    duplicate_found = True
                     if duplicate == "skip":
-                        pass
+                        # Skip adding this model
+                        break
                     elif duplicate == "update":
-                        pass
+                        # Update existing stored_model with new data
+                        # Implement your update logic here, e.g.,
+                        # stored_model.update_from(create_model)
+                        break
                     else:
                         raise DuplicateEntryError(f"{create_model} already exists")
+
+            if not duplicate_found:
+                create_list.append(create_model)
+
         self.manager.write(data=create_list)
         return create_list
 
