@@ -11,7 +11,7 @@ def test_file_storage_instance(
     assert file_storage.model is FakeUser
 
 
-def test_all_data_from_file(
+def test_get_all_data(
     file_storage: FileStorage[FakeUser],
 ) -> None:
     """Test get all data from file"""
