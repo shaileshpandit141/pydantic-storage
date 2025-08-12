@@ -18,6 +18,19 @@ def test_get_all_data(
     assert isinstance(file_storage.all(), list)
 
 
+def test_get_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test get a single item from file"""
+    data1 = file_storage.get(id=2)
+    data2 = file_storage.get(id=2, email="fake@gmail.co.com")
+
+    if data1:
+        assert data1.id == 2
+
+    assert data2 is None
+
+
 def test_create_data(
     file_storage: FileStorage[FakeUser],
 ) -> None:
