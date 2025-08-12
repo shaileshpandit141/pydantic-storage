@@ -27,7 +27,7 @@ class BaseStorage(ABC, Generic[T]):
 
     @property
     @abstractmethod
-    def file(self) -> BaseManager[T]:
+    def uri(self) -> BaseManager[T]:
         """Return Current File instance"""
         raise NotImplementedError
 
@@ -53,12 +53,6 @@ class BaseStorage(ABC, Generic[T]):
     @abstractmethod
     def manager(self) -> BaseManager[T]:
         """Return Current manager instance"""
-        raise NotImplementedError
-
-    @property
-    @abstractmethod
-    def data(self) -> BaseManager[T]:
-        """Return list of data"""
         raise NotImplementedError
 
     @abstractmethod
