@@ -33,3 +33,8 @@ class FileStorage(BaseStorage[T]):
     def metadata(self) -> MetaData:
         """Return Current Model"""
         return self.manager.metadata
+
+    @property
+    def unique_fields(self) -> list[str] | None:
+        """Return Current Model"""
+        return self._unique_fields
