@@ -56,6 +56,12 @@ class BaseStorage(ABC, Generic[T]):
         """Return Current manager instance"""
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def data(self) -> list[T]:
+        """Return all data from storage"""
+        raise NotImplementedError
+
     @abstractmethod
     def all(self) -> list[T]:
         """Retrieve all items from the storage."""
