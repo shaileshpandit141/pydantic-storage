@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Generic, Literal
+from typing import TYPE_CHECKING, Any, Generic, Literal
 
-from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseManager
 from pydantic_storage.models import MetaData
 from pydantic_storage.types import MetaDataDict, T
+
+if TYPE_CHECKING:
+    from pydantic_storage._services import FileManager
 
 
 class BaseStorage(ABC, Generic[T]):
@@ -17,14 +19,14 @@ class BaseStorage(ABC, Generic[T]):
         model: type[T],
         metadata: MetaDataDict,
         unique_fields: list[str] | None = None,
-        manager: type[BaseManager[T]] = FileManager,
+        manager: type[BaseManager[T]] | None = None,
     ) -> None:
         """Initialize the AbstractFileStorage."""
         self._file = uri if isinstance(uri, Path) else Path(uri)
         self._model = model
         self._metadata = metadata
         self._unique_fields = unique_fields or []
-        self._manager = manager
+        self._manager = manager or FileManager[T]
 
     @property
     @abstractmethod
