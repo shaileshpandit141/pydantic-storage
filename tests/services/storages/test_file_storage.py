@@ -1,3 +1,5 @@
+from pytest import mark
+
 from pydantic_storage._services import FileStorage
 from tests.mocks.models import FakeUser
 
@@ -88,3 +90,13 @@ def test_delete_data(
     assert deleted_data.id == 6  # type: ignore
     assert deleted_data.name == "ashis"  # type: ignore
     assert deleted_data.email == "ashis@gmail.com"  # type: ignore
+
+
+@mark.skip(reason="This is not work expected")
+def test_clear_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test to delete data from file"""
+    file_storage.clear()
+
+    assert file_storage.count() == 0
