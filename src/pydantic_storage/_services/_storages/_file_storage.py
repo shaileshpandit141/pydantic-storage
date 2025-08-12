@@ -80,3 +80,8 @@ class FileStorage(BaseStorage[T]):
             if all([model_dict[key] == value for key, value in kwargs.items()]):
                 return True
         return False
+
+    def create(self, data: list[T]) -> list[T]:
+        """Create a new item in the data storage."""
+        self.manager.write(data=data)
+        return data
