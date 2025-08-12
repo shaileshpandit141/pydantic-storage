@@ -58,11 +58,7 @@ def test_exists_data(
 ) -> None:
     """Test to chaeck a data is exists or not"""
     exists = file_storage.exists(email="shailesh@gmail.com")
-
-    if exists:
-        assert exists is True
-    else:
-        assert exists is False
+    assert exists is True
 
 
 def test_filter_data(
