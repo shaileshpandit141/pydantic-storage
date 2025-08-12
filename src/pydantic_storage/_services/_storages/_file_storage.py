@@ -38,3 +38,12 @@ class FileStorage(BaseStorage[T]):
     def unique_fields(self) -> list[str] | None:
         """Return Current Model"""
         return self._unique_fields
+
+    @property
+    def manager(self) -> BaseManager[T]:
+        """Return Current manager instance"""
+        return FileManager(
+            uri=self._file,
+            model=self._model,
+            metadata=self._metadata,
+        )
