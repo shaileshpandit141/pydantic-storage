@@ -71,3 +71,12 @@ class FileStorage(BaseStorage[T]):
     def count(self) -> int:
         """Count the number of items in the storage."""
         return len(self.data)
+
+    def exists(self, **kwargs: Any) -> bool:
+        """Check if an item exists by key and value."""
+        check_model_kwargs(self.model, kwargs=kwargs)
+        for model in self.data:
+            model_dict = model.model_dump()
+            if all([model_dict[key] == value for key, value in kwargs.items()]):
+                return True
+        return False
