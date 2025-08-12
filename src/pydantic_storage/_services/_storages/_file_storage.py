@@ -103,7 +103,9 @@ class FileStorage(BaseStorage[T]):
             model_dict = model.model_dump()
             if all([model_dict[key] == value for key, value in kwargs.items()]):
                 try:
-                    return self.data.pop(index)
+                    deleted_item: T = self.data.pop(index)
+                    self.manager.save(action="modified")
+                    return deleted_item
                 except IndexError:
                     return None
         return None
