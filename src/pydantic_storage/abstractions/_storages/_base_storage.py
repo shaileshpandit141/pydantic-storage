@@ -4,6 +4,7 @@ from typing import Any, Generic
 
 from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseManager
+from pydantic_storage.models import MetaData
 from pydantic_storage.types import MetaDataDict, T
 
 
@@ -27,25 +28,25 @@ class BaseStorage(ABC, Generic[T]):
 
     @property
     @abstractmethod
-    def uri(self) -> BaseManager[T]:
+    def uri(self) -> str:
         """Return Current File instance"""
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def model(self) -> BaseManager[T]:
+    def model(self) -> type[T]:
         """Return Current Model"""
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def metadata(self) -> BaseManager[T]:
+    def metadata(self) -> MetaData:
         """Return Current Model"""
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def unique_fields(self) -> BaseManager[T]:
+    def unique_fields(self) -> list[str] | None:
         """Return Current Model"""
         raise NotImplementedError
 
