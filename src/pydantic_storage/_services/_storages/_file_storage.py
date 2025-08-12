@@ -52,3 +52,7 @@ class FileStorage(BaseStorage[T]):
     def data(self) -> list[T]:
         """Return all data from storage"""
         return self.manager.data
+
+    def all(self) -> list[T]:
+        """Retrieve all items from the storage."""
+        return self.manager.data
