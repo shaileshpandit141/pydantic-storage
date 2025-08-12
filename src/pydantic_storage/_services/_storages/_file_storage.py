@@ -1,8 +1,10 @@
 from pathlib import Path
+from typing import Any
 
 from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseStorage
 from pydantic_storage.abstractions._managers._base_manager import BaseManager
+from pydantic_storage.core import check_model_kwargs
 from pydantic_storage.models import MetaData
 from pydantic_storage.types._generic_types import T
 from pydantic_storage.types._model_dict_types import MetaDataDict
@@ -56,3 +58,12 @@ class FileStorage(BaseStorage[T]):
     def all(self) -> list[T]:
         """Retrieve all items from the storage."""
         return self.manager.data
+
+    def get(self, **kwargs: Any) -> T | None:
+        """Retrieve an item by key and value."""
+        check_model_kwargs(self.model, kwargs=kwargs)
+        for index, model in enumerate(self.data):
+            model_dict = model.model_dump()
+            if all([model_dict[key] == value for key, value in kwargs.items()]):
+                return self.data[index]
+        return None
