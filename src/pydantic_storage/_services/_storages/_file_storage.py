@@ -17,3 +17,8 @@ class FileStorage(BaseStorage[T]):
         manager: type[BaseManager[T]] = FileManager,
     ) -> None:
         super().__init__(uri, model, metadata, unique_fields, manager)
+
+    @property
+    def uri(self) -> str:
+        """Return Current File instance"""
+        return self._file.resolve().as_uri()
