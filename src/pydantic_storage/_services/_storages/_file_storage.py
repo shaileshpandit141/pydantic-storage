@@ -47,3 +47,8 @@ class FileStorage(BaseStorage[T]):
             model=self._model,
             metadata=self._metadata,
         )
+
+    @property
+    def data(self) -> list[T]:
+        """Return all data from storage"""
+        return self.manager.data
