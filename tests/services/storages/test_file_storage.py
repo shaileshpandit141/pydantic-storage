@@ -77,3 +77,14 @@ def test_filter_data(
 
     assert filter_data1[0].email == "nice@gmail.com"
     assert len(filter_data2) == 0
+
+
+def test_delete_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test get all data from file"""
+    deleted_data = file_storage.delete(id=6)
+
+    assert deleted_data.id == 6  # type: ignore
+    assert deleted_data.name == "ashis"  # type: ignore
+    assert deleted_data.email == "ashis@gmail.com"  # type: ignore
