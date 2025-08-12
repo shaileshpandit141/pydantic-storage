@@ -120,7 +120,7 @@ Issues = "https://github.com/shaileshpandit141/pydantic-storage/issues"
 # ====================
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-v"
+addopts = "-v -s"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
