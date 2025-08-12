@@ -9,3 +9,10 @@ def test_file_storage_instance(
     assert isinstance(file_storage.uri, str)
     assert isinstance(file_storage.unique_fields, list)
     assert file_storage.model is FakeUser
+
+
+def test_all_data_from_file(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test get all data from file"""
+    assert isinstance(file_storage.all(), list)
