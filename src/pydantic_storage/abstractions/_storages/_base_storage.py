@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Generic
+from typing import Any, Generic, Literal
 
 from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseManager
@@ -83,7 +83,11 @@ class BaseStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, data: list[T]) -> list[T]:
+    def create(
+        self,
+        data: list[T],
+        duplicate: Literal["skip", "update"] = "skip",
+    ) -> list[T]:
         """Create a new item in the data storage."""
         raise NotImplementedError
 

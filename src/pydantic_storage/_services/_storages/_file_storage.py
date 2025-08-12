@@ -1,10 +1,11 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic_storage._services import FileManager
 from pydantic_storage.abstractions import BaseStorage
 from pydantic_storage.abstractions._managers._base_manager import BaseManager
 from pydantic_storage.core import check_model_kwargs
+from pydantic_storage.exceptions import DuplicateEntryError
 from pydantic_storage.models import MetaData
 from pydantic_storage.types._generic_types import T
 from pydantic_storage.types._model_dict_types import MetaDataDict
@@ -81,10 +82,33 @@ class FileStorage(BaseStorage[T]):
                 return True
         return False
 
-    def create(self, data: list[T]) -> list[T]:
+    def create(
+        self,
+        data: list[T],
+        duplicate: Literal["skip", "update"] = "skip",
+    ) -> list[T]:
         """Create a new item in the data storage."""
-        self.manager.write(data=data)
-        return data
+        create_list: list[T] = []
+        for create_model in data:
+            create_model_dict = create_model.model_dump()
+            for stored_model in self.data:
+                stored_model_dict = stored_model.model_dump()
+                if not all(
+                    [
+                        create_model_dict[field] == stored_model_dict[field]
+                        for field in self._unique_fields
+                    ]
+                ):
+                    create_list.append(create_model)
+                else:
+                    if duplicate == "skip":
+                        pass
+                    elif duplicate == "update":
+                        pass
+                    else:
+                        raise DuplicateEntryError(f"{create_model} already exists")
+        self.manager.write(data=create_list)
+        return create_list
 
     def filter(self, **kwargs: Any) -> list[T]:
         """Filter items based on kwargs"""
