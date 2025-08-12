@@ -29,3 +29,21 @@ def test_create_data(
 
     if len(created_data) > 0:
         assert data[0].name == created_data[0].name
+
+
+def test_filter_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test get all data from file"""
+    filter_data1 = file_storage.filter(
+        name="nice",
+        email="nice@gmail.com",
+    )
+
+    filter_data2 = file_storage.filter(
+        id=2,
+        name="nice",
+    )
+
+    assert filter_data1[0].email == "nice@gmail.com"
+    assert len(filter_data2) == 0
