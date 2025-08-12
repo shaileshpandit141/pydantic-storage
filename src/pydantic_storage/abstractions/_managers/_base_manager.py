@@ -20,14 +20,7 @@ class BaseManager(ABC, Generic[T]):
         self._model = model
         self._metadata: MetaData = MetaData(**metadata)
         self._data: list[T] = []
-        self.initialize()
-
-    def initialize(self) -> None:
-        """Initialize the current state"""
         self._create()
-        data: Data[T] = self._load()
-        self._data = data.records
-        self._metadata = data.metadata
 
     @property
     @abstractmethod

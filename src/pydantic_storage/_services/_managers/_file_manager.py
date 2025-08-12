@@ -68,6 +68,20 @@ class FileManager(BaseManager[T]):
             encryption="none",
         )
 
+    def combine_unique_data(
+        self,
+        list1: list[T],
+        list2: list[T],
+    ) -> list[T]:
+        """Combine two lists into one, removing duplicates"""
+        combined: list[T] = []
+        seen_items: list[T] = []
+        for item in list1 + list2:
+            if not any(item == seen for seen in seen_items):
+                seen_items.append(item)
+                combined.append(item)
+        return combined
+
     def save(
         self,
         action: Literal["created", "accessed", "modified"],
@@ -76,6 +90,9 @@ class FileManager(BaseManager[T]):
         """Save the current state of the resource."""
         try:
             data = self._load()
+            # Update current session
+            # self._data.extend(data.records)
+            self._data = self.combine_unique_data(self._data, data.records)
             self.update_meradata(data.metadata)
             self.update_storage()
             if action == "created":
