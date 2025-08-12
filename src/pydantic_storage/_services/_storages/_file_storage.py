@@ -2,8 +2,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from pydantic_storage._services import FileManager
-from pydantic_storage.abstractions import BaseStorage
-from pydantic_storage.abstractions._managers._base_manager import BaseManager
+from pydantic_storage.abstractions import BaseManager, BaseStorage
 from pydantic_storage.core import check_model_kwargs
 from pydantic_storage.exceptions import DuplicateEntryError
 from pydantic_storage.models import MetaData
@@ -12,6 +11,8 @@ from pydantic_storage.types._model_dict_types import MetaDataDict
 
 
 class FileStorage(BaseStorage[T]):
+    """File storage class"""
+
     def __init__(
         self,
         uri: str | Path,
