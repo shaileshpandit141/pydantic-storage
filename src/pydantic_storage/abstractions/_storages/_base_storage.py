@@ -98,6 +98,6 @@ class BaseStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def clear(self) -> bool:
+    def clear(self) -> None:
         """Clear all items from the data storage."""
         raise NotImplementedError

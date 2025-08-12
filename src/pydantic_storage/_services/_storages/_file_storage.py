@@ -109,3 +109,8 @@ class FileStorage(BaseStorage[T]):
                 except IndexError:
                     return None
         return None
+
+    def clear(self) -> None:
+        """Clear all items from the data storage."""
+        self.manager.data.clear()
+        self.manager.save(action="modified")
