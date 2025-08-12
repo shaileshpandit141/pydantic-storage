@@ -67,3 +67,7 @@ class FileStorage(BaseStorage[T]):
             if all([model_dict[key] == value for key, value in kwargs.items()]):
                 return self.data[index]
         return None
+
+    def count(self) -> int:
+        """Count the number of items in the storage."""
+        return len(self.data)
