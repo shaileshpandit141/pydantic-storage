@@ -82,7 +82,7 @@ def test_filter_data(
 def test_delete_data(
     file_storage: FileStorage[FakeUser],
 ) -> None:
-    """Test get all data from file"""
+    """Test to delete data from file"""
     deleted_data = file_storage.delete(id=6)
 
     assert deleted_data.id == 6  # type: ignore
