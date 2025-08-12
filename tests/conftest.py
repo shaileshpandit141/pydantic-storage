@@ -22,7 +22,7 @@ def manager() -> FileManager[FakeUser]:
 @fixture(scope="module")
 def file_storage() -> FileStorage[FakeUser]:
     return FileStorage(
-        uri="./users.json",
+        uri="tests/db/users.json",
         model=FakeUser,
         metadata={
             "version": "1.0.0",
