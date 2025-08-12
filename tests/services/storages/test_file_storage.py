@@ -44,6 +44,15 @@ def test_create_data(
         assert data[0].name == created_data[0].name
 
 
+def test_count_all_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test to count all data"""
+    count = file_storage.count()
+
+    assert count > 0
+
+
 def test_filter_data(
     file_storage: FileStorage[FakeUser],
 ) -> None:
