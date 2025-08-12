@@ -93,7 +93,7 @@ class BaseStorage(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def delete(self, **kwargs: Any) -> T:
+    def delete(self, **kwargs: Any) -> T | None:
         """Delete an items based on kwargs"""
         raise NotImplementedError
 

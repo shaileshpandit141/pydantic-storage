@@ -95,3 +95,15 @@ class FileStorage(BaseStorage[T]):
             if all([model_dict[key] == value for key, value in kwargs.items()]):
                 filter_list.append(self.data[index])
         return filter_list
+
+    def delete(self, **kwargs: Any) -> T | None:
+        """Delete an items based on kwargs"""
+        check_model_kwargs(self.model, kwargs=kwargs)
+        for index, model in enumerate(self.data):
+            model_dict = model.model_dump()
+            if all([model_dict[key] == value for key, value in kwargs.items()]):
+                try:
+                    return self.data.pop(index)
+                except IndexError:
+                    return None
+        return None
