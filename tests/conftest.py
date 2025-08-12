@@ -20,10 +20,10 @@ def manager() -> FileManager[FakeUser]:
 
 
 @fixture(scope="module")
-def storage() -> FileStorage:
+def file_storage() -> FileStorage[FakeUser]:
     return FileStorage(
-        file_path="./users.json",
-        model_class=FakeUser,
+        uri="./users.json",
+        model=FakeUser,
         metadata={
             "version": "1.0.0",
             "title": "User records",
