@@ -22,3 +22,8 @@ class FileStorage(BaseStorage[T]):
     def uri(self) -> str:
         """Return Current File instance"""
         return self._file.resolve().as_uri()
+
+    @property
+    def model(self) -> type[T]:
+        """Return Current Model"""
+        return self._model
