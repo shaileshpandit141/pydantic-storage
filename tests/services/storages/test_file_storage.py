@@ -53,6 +53,18 @@ def test_count_all_data(
     assert count > 0
 
 
+def test_exists_data(
+    file_storage: FileStorage[FakeUser],
+) -> None:
+    """Test to chaeck a data is exists or not"""
+    exists = file_storage.exists(email="shailesh@gmail.com")
+
+    if exists:
+        assert exists is True
+    else:
+        assert exists is False
+
+
 def test_filter_data(
     file_storage: FileStorage[FakeUser],
 ) -> None:
