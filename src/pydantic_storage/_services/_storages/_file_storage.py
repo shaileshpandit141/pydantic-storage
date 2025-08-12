@@ -85,3 +85,13 @@ class FileStorage(BaseStorage[T]):
         """Create a new item in the data storage."""
         self.manager.write(data=data)
         return data
+
+    def filter(self, **kwargs: Any) -> list[T]:
+        """Filter items based on kwargs"""
+        check_model_kwargs(self.model, kwargs=kwargs)
+        filter_list: list[T] = []
+        for index, model in enumerate(self.data):
+            model_dict = model.model_dump()
+            if all([model_dict[key] == value for key, value in kwargs.items()]):
+                filter_list.append(self.data[index])
+        return filter_list
